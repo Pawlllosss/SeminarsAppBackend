@@ -2,10 +2,10 @@ package pl.oczadly.spring.topics.topic.controller;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,16 +51,23 @@ public class TopicController {
         return topicResourceAssembler.toResource(topic);
     }
 
-    @PostMapping("/")
-    Topic addTopic(@RequestBody Topic topic) {
-        return topicRepository.save(topic);
+    @GetMapping(value = "/course/{id}", produces = { "application/hal+json" })
+    Resources<Resource<Topic>> getByCourseId(@PathVariable Long courseId) {
+        List<Resource<Topic>> topics = topicRepository.findByCourseId(courseId).stream()
+                .map(topicResourceAssembler::toResource)
+                .collect(Collectors.toList());
+
+        Link link = linkTo(TopicController.class).withSelfRel();
+        return new Resources<>(topics, link);
     }
 
-    void addSelfLinkToTopic(Topic topic) {
-        Long topicId = topic.getTopicId();
-        Link selfLink = linkTo(TopicController.class)
-                .slash(topicId).withSelfRel();
+    @PostMapping("/")
+    ResponseEntity<Resource<Topic>> addTopic(@RequestBody Topic topic) {
+        Topic persistedTopic = topicRepository.save(topic);
 
-        topic.add(selfLink);
+        return ResponseEntity
+                .created(linkTo(TopicController.class)
+                        .slash(persistedTopic.getId()).toUri())
+                .body(topicResourceAssembler.toResource(persistedTopic));
     }
 }

@@ -14,7 +14,7 @@ public class TopicResourceAssembler implements ResourceAssembler<Topic, Resource
 
     @Override
     public Resource<Topic> toResource(Topic topic) {
-        Long topicId = topic.getTopicId();
+        Long topicId = topic.getId();
         Link selfLink = linkTo(TopicController.class)
                 .slash(topicId).withSelfRel();
 
