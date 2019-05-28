@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.ResourceAccessException;
+import pl.oczadly.spring.topics.course.entity.Course;
+import pl.oczadly.spring.topics.course.repository.CourseRepository;
 import pl.oczadly.spring.topics.topic.entity.Topic;
 import pl.oczadly.spring.topics.topic.entity.TopicNotFoundException;
 import pl.oczadly.spring.topics.topic.entity.TopicResourceAssembler;
@@ -25,11 +28,13 @@ import java.util.stream.Collectors;
 public class TopicController {
 
     private TopicRepository topicRepository;
+    private CourseRepository courseRepository;
 
     private TopicResourceAssembler topicResourceAssembler;
 
-    public TopicController(TopicRepository topicRepository, TopicResourceAssembler topicResourceAssembler) {
+    public TopicController(TopicRepository topicRepository, CourseRepository courseRepository, TopicResourceAssembler topicResourceAssembler) {
         this.topicRepository = topicRepository;
+        this.courseRepository = courseRepository;
         this.topicResourceAssembler = topicResourceAssembler;
     }
 
@@ -51,7 +56,7 @@ public class TopicController {
         return topicResourceAssembler.toResource(topic);
     }
 
-    @GetMapping(value = "/course/{id}", produces = { "application/hal+json" })
+    @GetMapping(value = "/course/{courseId}", produces = { "application/hal+json" })
     Resources<Resource<Topic>> getByCourseId(@PathVariable Long courseId) {
         List<Resource<Topic>> topics = topicRepository.findByCourseId(courseId).stream()
                 .map(topicResourceAssembler::toResource)
@@ -61,8 +66,13 @@ public class TopicController {
         return new Resources<>(topics, link);
     }
 
-    @PostMapping("/")
-    ResponseEntity<Resource<Topic>> addTopic(@RequestBody Topic topic) {
+    @PostMapping(value = "/course/{courseId}", produces = { "application/hal+json" })
+    ResponseEntity<Resource<Topic>> addTopic(@PathVariable Long courseId,
+                                             @RequestBody Topic topic) {
+        Course relatedCourse = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceAccessException("Not found course!"));
+
+        topic.setCourse(relatedCourse);
         Topic persistedTopic = topicRepository.save(topic);
 
         return ResponseEntity
