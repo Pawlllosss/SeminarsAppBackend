@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import pl.oczadly.spring.topics.topic.controller.TopicController;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 @Component
@@ -15,9 +16,14 @@ public class TopicResourceAssembler implements ResourceAssembler<Topic, Resource
     @Override
     public Resource<Topic> toResource(Topic topic) {
         Long topicId = topic.getId();
-        Link selfLink = linkTo(TopicController.class)
-                .slash(topicId).withSelfRel();
+        Link selfLink = linkTo(methodOn(TopicController.class).getById(topicId))
+                .withSelfRel();
+        Link updateLink = linkTo(methodOn(TopicController.class).updateTopic(topic, topicId))
+                .withRel("update");
+        Link deleteLink = linkTo(methodOn(TopicController.class).deleteTopic(topicId))
+                .withRel("delete");
 
-        return new Resource<>(topic, selfLink);
+
+        return new Resource<>(topic, selfLink, updateLink, deleteLink);
     }
 }

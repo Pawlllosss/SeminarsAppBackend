@@ -6,9 +6,11 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +41,7 @@ public class TopicController {
     }
 
     @GetMapping(produces = { "application/hal+json" })
-    Resources<Resource<Topic>> getAll() {
+    public Resources<Resource<Topic>> getAll() {
         List<Resource<Topic>> topics = topicRepository.findAll().stream()
                 .map(topicResourceAssembler::toResource)
                 .collect(Collectors.toList());
@@ -49,7 +51,7 @@ public class TopicController {
     }
 
     @GetMapping(value = "/{id}", produces = { "application/hal+json" })
-    Resource<Topic> getById(@PathVariable Long id) {
+    public Resource<Topic> getById(@PathVariable Long id) {
         Topic topic = topicRepository.findById(id)
                 .orElseThrow(() -> new TopicNotFoundException(id));
 
@@ -57,7 +59,7 @@ public class TopicController {
     }
 
     @GetMapping(value = "/course/{courseId}", produces = { "application/hal+json" })
-    Resources<Resource<Topic>> getByCourseId(@PathVariable Long courseId) {
+    public Resources<Resource<Topic>> getByCourseId(@PathVariable Long courseId) {
         List<Resource<Topic>> topics = topicRepository.findByCourseId(courseId).stream()
                 .map(topicResourceAssembler::toResource)
                 .collect(Collectors.toList());
@@ -67,8 +69,8 @@ public class TopicController {
     }
 
     @PostMapping(value = "/course/{courseId}", produces = { "application/hal+json" })
-    ResponseEntity<Resource<Topic>> addTopic(@PathVariable Long courseId,
-                                             @RequestBody Topic topic) {
+    public ResponseEntity<Resource<Topic>> addTopic(@RequestBody Topic topic,
+                                                    @PathVariable Long courseId) {
         Course relatedCourse = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceAccessException("Not found course!"));
 
@@ -79,5 +81,34 @@ public class TopicController {
                 .created(linkTo(TopicController.class)
                         .slash(persistedTopic.getId()).toUri())
                 .body(topicResourceAssembler.toResource(persistedTopic));
+    }
+
+    @PutMapping(value = "/{id}", produces = { "application/hal+json" })
+    public ResponseEntity<Resource<Topic>> updateTopic(@RequestBody Topic topic,
+                                                       @PathVariable Long id) {
+        Topic topicToUpdate = topicRepository.findById(id)
+                .orElseThrow(() -> new TopicNotFoundException(id));
+
+        topicToUpdate.setName(topic.getName());
+        topicToUpdate.setDescription(topic.getDescription());
+
+        Topic updatedTopic = topicRepository.save(topicToUpdate);
+        return ResponseEntity
+                .created(linkTo(TopicController.class)
+                        .slash(updatedTopic.getId()).toUri())
+                .body(topicResourceAssembler.toResource(updatedTopic));
+    }
+
+
+    @DeleteMapping(value = "/{id}", produces = { "application/hal+json" })
+    public ResponseEntity<Topic> deleteTopic(@PathVariable Long id) {
+        if(!topicRepository.existsById(id)) {
+            throw new TopicNotFoundException(id);
+        }
+
+        topicRepository.deleteById(id);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

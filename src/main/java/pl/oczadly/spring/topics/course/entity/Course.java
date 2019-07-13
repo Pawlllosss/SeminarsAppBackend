@@ -1,5 +1,6 @@
 package pl.oczadly.spring.topics.course.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
@@ -50,3 +51,5 @@ public class Course{
         this.name = name;
     }
 }
+
+

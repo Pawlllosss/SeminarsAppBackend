@@ -1,6 +1,7 @@
 package pl.oczadly.spring.topics.topic.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "topics")
+@DynamicUpdate
 public class Topic {
     @Id
     @GeneratedValue(generator = "topic_generator")
