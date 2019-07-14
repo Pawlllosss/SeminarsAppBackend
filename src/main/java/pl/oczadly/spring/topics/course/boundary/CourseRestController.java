@@ -1,5 +1,6 @@
-package pl.oczadly.spring.topics.course.controller;
+package pl.oczadly.spring.topics.course.boundary;
 
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.oczadly.spring.topics.course.control.CourseService;
 import pl.oczadly.spring.topics.course.entity.Course;
-import pl.oczadly.spring.topics.course.entity.CourseNotFoundException;
-import pl.oczadly.spring.topics.course.entity.CourseResourceAssembler;
-import pl.oczadly.spring.topics.course.repository.CourseRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,63 +23,58 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/course")
-public class CourseController {
+public class CourseRestController {
 
-    private CourseRepository courseRepository;
+    private CourseService courseService;
 
     private CourseResourceAssembler courseResourceAssembler;
 
-    public CourseController(CourseRepository courseRepository, CourseResourceAssembler courseResourceAssembler) {
-        this.courseRepository = courseRepository;
+    public CourseRestController(CourseService courseService, CourseResourceAssembler courseResourceAssembler) {
+        this.courseService = courseService;
         this.courseResourceAssembler = courseResourceAssembler;
     }
 
     @GetMapping(produces = { "application/hal+json" })
-    public Resources<Resource<Course>> getAll() {
-        List<Resource<Course>> courses = courseRepository.findAll().stream()
+    public Resources<Resource<Course>> getAllCourses() {
+        List<Course> courses = courseService.getAllCourses();
+        List<Resource<Course>> coursesResponse = courses.stream()
                 .map(courseResourceAssembler::toResource)
                 .collect(Collectors.toList());
 
-        return new Resources<>(courses);
+        Link selfLink = linkTo(CourseRestController.class).withSelfRel();
+        return new Resources<>(coursesResponse, selfLink);
     }
 
     @GetMapping(value = "/{id}", produces = { "application/hal+json"})
-    public Resource<Course> getById(@PathVariable Long id) {
-        Course course = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
-
+    public Resource<Course> getCourseById(@PathVariable Long id) {
+        Course course = courseService.getCourseById(id);
         return courseResourceAssembler.toResource(course);
     }
 
     @PostMapping(produces = { "application/hal+json"})
     public ResponseEntity<Resource<Course>> createCourse(@RequestBody Course course) {
-        Course persistedCourse = courseRepository.save(course);
+        Course persistedCourse = courseService.createCourse(course);
 
-        return ResponseEntity.created(linkTo(methodOn(CourseController.class)
-                .getById(persistedCourse.getId()))
+        return ResponseEntity.created(linkTo(methodOn(CourseRestController.class)
+                .getCourseById(persistedCourse.getId()))
                 .toUri())
                 .body(courseResourceAssembler.toResource(persistedCourse));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Resource<Course>> updateCourse(@RequestBody Course course, @PathVariable Long id) {
-        Course courseToUpdate = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
+        Course updatedCourse = courseService.updateCourse(course, id);
 
-        courseToUpdate.setName(course.getName());
-        Course updatedCourse = courseRepository.save(courseToUpdate);
-
-        return ResponseEntity.created(linkTo(methodOn(CourseController.class)
-                .getById(id))
+        return ResponseEntity.created(linkTo(methodOn(CourseRestController.class)
+                .getCourseById(id))
                 .toUri())
                 .body(courseResourceAssembler.toResource(updatedCourse));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Course> deleteCourse(@PathVariable Long id) {
-        if(!courseRepository.existsById(id)) {
-            throw new CourseNotFoundException(id);
-        }
+        courseService.deleteCourse(id);
 
-        courseRepository.deleteById(id);
         return ResponseEntity.noContent()
                 .build();
     }

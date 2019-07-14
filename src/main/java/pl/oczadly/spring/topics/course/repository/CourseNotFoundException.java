@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.course.entity;
+package pl.oczadly.spring.topics.course.repository;
 
 public class CourseNotFoundException extends RuntimeException {
     public CourseNotFoundException(Long id) {
