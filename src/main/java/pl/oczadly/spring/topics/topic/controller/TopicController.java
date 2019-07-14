@@ -1,6 +1,7 @@
 package pl.oczadly.spring.topics.topic.controller;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -72,14 +73,15 @@ public class TopicController {
     public ResponseEntity<Resource<Topic>> addTopic(@RequestBody Topic topic,
                                                     @PathVariable Long courseId) {
         Course relatedCourse = courseRepository.findById(courseId)
-                .orElseThrow(() -> new ResourceAccessException("Not found course!"));
+                .orElseThrow(() -> new ResourceAccessException("Course with give id not found!"));
 
         topic.setCourse(relatedCourse);
         Topic persistedTopic = topicRepository.save(topic);
 
         return ResponseEntity
-                .created(linkTo(TopicController.class)
-                        .slash(persistedTopic.getId()).toUri())
+                .created(linkTo(methodOn(TopicController.class)
+                        .getById(persistedTopic.getId()))
+                        .toUri())
                 .body(topicResourceAssembler.toResource(persistedTopic));
     }
 
@@ -95,7 +97,7 @@ public class TopicController {
         Topic updatedTopic = topicRepository.save(topicToUpdate);
         return ResponseEntity
                 .created(linkTo(TopicController.class)
-                        .slash(updatedTopic.getId()).toUri())
+                        .slash(id).toUri())
                 .body(topicResourceAssembler.toResource(updatedTopic));
     }
 
@@ -107,8 +109,7 @@ public class TopicController {
         }
 
         topicRepository.deleteById(id);
-        return ResponseEntity
-                .noContent()
+        return ResponseEntity.noContent()
                 .build();
     }
 }

@@ -13,7 +13,7 @@ public class TopicNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(TopicNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String topicNotFoundHandler(Exception exception) {
+    String topicNotFoundHandler(TopicNotFoundException exception) {
         return exception.getMessage();
     }
 }

@@ -26,8 +26,6 @@ public class Course{
     @NotBlank
     private String name;
 
-    //TODO: teacher? begin date? day?
-
     public Course() {
     }
 
