@@ -18,10 +18,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TopicsApplication.class)
 @DataJpaTest
-//@ActiveProfiles("test")
-//@ContextConfiguration(classes = {TestingConfig.class, JPAConfiguration.class})
 public class CourseRepositoryTest {
 
     private static final String COURSE1_NAME = "Programowanie niskopoziomowe";
@@ -38,13 +35,6 @@ public class CourseRepositoryTest {
 
     @Autowired
     private CourseRepository courseRepository;
-
-    @BeforeEach
-    public void setup() {
-        logger.info("Debug");
-        List<Course> courses = List.of(COURSE1, COURSE2, COURSE3);
-        courses.forEach(entityManager::persistAndFlush);
-    }
 
     @AfterEach
     public void tearDown() {
