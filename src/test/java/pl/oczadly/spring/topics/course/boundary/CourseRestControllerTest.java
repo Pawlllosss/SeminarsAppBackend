@@ -72,7 +72,6 @@ public class CourseRestControllerTest {
     public void whenCreateCourseThenReturnCreatedCourse() throws Exception {
         final String courseName = "Programowanie niskopoziomowe";
         Course course = new Course(courseName);
-        course.setId(1L);
 
         given(courseService.createCourse(any())).willReturn(course);
 

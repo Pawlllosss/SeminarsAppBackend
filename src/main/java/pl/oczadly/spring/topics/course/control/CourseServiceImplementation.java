@@ -1,6 +1,7 @@
 package pl.oczadly.spring.topics.course.control;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.oczadly.spring.topics.course.entity.Course;
 import pl.oczadly.spring.topics.course.repository.CourseNotFoundException;
 import pl.oczadly.spring.topics.course.repository.CourseRepository;
@@ -8,6 +9,7 @@ import pl.oczadly.spring.topics.course.repository.CourseRepository;
 import java.util.List;
 
 @Service
+@Transactional
 public class CourseServiceImplementation implements CourseService {
 
     private CourseRepository courseRepository;
