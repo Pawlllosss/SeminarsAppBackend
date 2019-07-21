@@ -1,5 +1,6 @@
 package pl.oczadly.spring.topics.course.control;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.oczadly.spring.topics.course.entity.Course;
@@ -13,6 +14,9 @@ import java.util.List;
 public class CourseServiceImplementation implements CourseService {
 
     private CourseRepository courseRepository;
+
+    public CourseServiceImplementation() {
+    }
 
     public CourseServiceImplementation(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
@@ -49,5 +53,10 @@ public class CourseServiceImplementation implements CourseService {
         }
 
         courseRepository.deleteById(id);
+    }
+
+    @Autowired
+    public void setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
     }
 }

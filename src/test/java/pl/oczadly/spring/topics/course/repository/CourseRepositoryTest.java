@@ -2,10 +2,7 @@ package pl.oczadly.spring.topics.course.repository;
 
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -27,8 +24,6 @@ public class CourseRepositoryTest {
     private static final Course COURSE1 = new Course(COURSE1_NAME);
     private static final Course COURSE2 = new Course(COURSE2_NAME);
     private static final Course COURSE3 = new Course(COURSE3_NAME);
-
-    private final Logger logger = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
     private TestEntityManager entityManager;
