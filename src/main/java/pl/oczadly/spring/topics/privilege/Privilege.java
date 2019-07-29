@@ -1,7 +1,7 @@
 package pl.oczadly.spring.topics.privilege;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import pl.oczadly.spring.topics.role.UserRole;
+import pl.oczadly.spring.topics.role.Role;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -30,7 +30,11 @@ public class Privilege {
     private String name;
 
     @ManyToMany(mappedBy = "privileges")
-    private Set<UserRole> roles;
+    private Set<Role> roles;
+
+    public Privilege(@NotBlank String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -48,11 +52,11 @@ public class Privilege {
         this.name = name;
     }
 
-    public Set<UserRole> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<UserRole> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }

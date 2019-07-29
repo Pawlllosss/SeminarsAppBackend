@@ -1,7 +1,7 @@
 package pl.oczadly.spring.topics.user.entity;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import pl.oczadly.spring.topics.role.UserRole;
+import pl.oczadly.spring.topics.role.Role;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -43,11 +43,11 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private Set<UserRole> roles;
+    private Set<Role> roles;
 
     public Long getId() {
         return id;
@@ -89,11 +89,11 @@ public class User {
         this.tokenExpired = tokenExpired;
     }
 
-    public Set<UserRole> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<UserRole> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }

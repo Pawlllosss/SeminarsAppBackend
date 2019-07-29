@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_roles")
-public class UserRole {
+public class Role {
 
     @Id
     @GeneratedValue(generator = "role_generator")
@@ -37,11 +37,16 @@ public class UserRole {
 
     @ManyToMany
     @JoinTable(
-            name = "privileges",
+            name = "roles_privileges",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id")
     )
     private Set<Privilege> privileges;
+
+    public Role(@NotBlank String name, Set<Privilege> privileges) {
+        this.name = name;
+        this.privileges = privileges;
+    }
 
     public Long getId() {
         return id;
@@ -65,5 +70,13 @@ public class UserRole {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<Privilege> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(Set<Privilege> privileges) {
+        this.privileges = privileges;
     }
 }
