@@ -8,8 +8,8 @@ import pl.oczadly.spring.topics.privilege.Privilege;
 import pl.oczadly.spring.topics.privilege.PrivilegeRepository;
 import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
-import pl.oczadly.spring.topics.user.control.UserService;
-import pl.oczadly.spring.topics.user.entity.UserCreateDTO;
+import pl.oczadly.spring.topics.user.entity.User;
+import pl.oczadly.spring.topics.user.repository.UserRepository;
 
 import java.util.Optional;
 import java.util.Set;
@@ -18,12 +18,12 @@ import java.util.Set;
 public class InitialDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private boolean isDataAlreadyLoaded = false;
-    private UserService userService;
+    private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PrivilegeRepository privilegeRepository;
 
-    public InitialDataLoader(UserService userService, RoleRepository roleRepository, PrivilegeRepository privilegeRepository) {
-        this.userService = userService;
+    public InitialDataLoader(UserRepository userRepository, RoleRepository roleRepository, PrivilegeRepository privilegeRepository) {
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.privilegeRepository = privilegeRepository;
     }
@@ -47,10 +47,14 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         Role adminRole = createUserRoleIfNotFoundOrReturnExisting("ADMIN", adminPrivileges);
         createUserRoleIfNotFoundOrReturnExisting("USER", userPrivileges);
 
-        UserCreateDTO adminCreateDto = new UserCreateDTO();
-        adminCreateDto.setEmail("admin@admin.com");
-        adminCreateDto.setPassword("admin");
-        userService.registerNewUser(adminCreateDto);
+        User admin = new User();
+
+        admin.setEmail("admin@admin.com");
+        admin.setPassword("admin");
+        admin.setRoles(Set.of(adminRole));
+        admin.setEnabled(true);
+
+        userRepository.save(admin);
 
         isDataAlreadyLoaded = true;
     }

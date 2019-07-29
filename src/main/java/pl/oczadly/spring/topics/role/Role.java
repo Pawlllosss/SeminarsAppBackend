@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "user_roles")
+@Table(name = "roles")
 public class Role {
 
     @Id
