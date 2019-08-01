@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.oczadly.spring.topics.user.control.UserService;
 import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.UserCreateDTO;
+import pl.oczadly.spring.topics.user.entity.UserDTO;
 
 @RestController
 @RequestMapping("user")
@@ -22,8 +22,8 @@ public class UserRestController {
     }
 
     @PostMapping
-    public User registerNewUser(@RequestBody UserCreateDTO userCreateDTO) {
-        return userService.registerNewUser(userCreateDTO);
+    public User registerNewUser(@RequestBody UserDTO userDTO) {
+        return userService.registerNewUser(userDTO);
     }
 
     public UserRestController(UserService userService) {

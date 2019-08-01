@@ -2,7 +2,7 @@ package pl.oczadly.spring.topics.user.entity;
 
 import javax.validation.constraints.NotBlank;
 
-public class UserCreateDTO {
+public class UserDTO {
 
     @NotBlank
     private String email;
