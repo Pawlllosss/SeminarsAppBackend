@@ -26,6 +26,7 @@ public class UserAuthenticationServiceImplementation implements UserAuthenticati
                 .build();
     }
 
+    @Override
     @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userService.getUserById(id);
