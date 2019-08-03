@@ -1,10 +1,14 @@
 package pl.oczadly.spring.topics.user.entity;
 
+import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.userdetails.UserDetails;
 import pl.oczadly.spring.topics.role.Role;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -12,9 +16,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
+
+//TODO: should implement UserDetails
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -30,6 +37,9 @@ public class User {
     private Long id;
 
     @NotBlank
+    @NaturalId
+    @Email
+    @Column(unique = true)
     private String email;
 
     @NotBlank
@@ -41,7 +51,7 @@ public class User {
     @NotNull
     private boolean tokenExpired;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

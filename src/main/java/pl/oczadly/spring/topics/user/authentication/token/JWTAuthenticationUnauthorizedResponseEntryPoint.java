@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.user.control.authentication;
+package pl.oczadly.spring.topics.user.authentication.token;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

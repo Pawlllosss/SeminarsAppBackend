@@ -9,8 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.oczadly.spring.topics.user.control.authentication.JWTAuthenticationFilter;
-import pl.oczadly.spring.topics.user.control.authentication.JWTAuthenticationUnauthorizedResponseEntryPoint;
+import pl.oczadly.spring.topics.user.authentication.token.JWTAuthenticationFilter;
+import pl.oczadly.spring.topics.user.authentication.token.JWTAuthenticationUnauthorizedResponseEntryPoint;
 
 
 @Configuration

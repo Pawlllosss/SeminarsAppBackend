@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.user.control.authentication;
+package pl.oczadly.spring.topics.user.authentication;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

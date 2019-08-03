@@ -20,12 +20,15 @@ public class UserServiceImplementation implements UserService {
 
     private ModelMapper mapper;
 
-
     //TODO: move it to setter?
     public UserServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, ModelMapper mapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.mapper = mapper;
+    }
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
