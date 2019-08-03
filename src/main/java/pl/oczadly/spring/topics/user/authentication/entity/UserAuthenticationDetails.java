@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.user.authentication;
+package pl.oczadly.spring.topics.user.authentication.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

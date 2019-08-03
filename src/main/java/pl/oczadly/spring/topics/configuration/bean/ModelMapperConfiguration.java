@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.configuration;
+package pl.oczadly.spring.topics.configuration.bean;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

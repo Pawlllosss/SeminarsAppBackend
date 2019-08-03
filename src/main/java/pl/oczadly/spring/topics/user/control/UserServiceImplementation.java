@@ -1,6 +1,7 @@
 package pl.oczadly.spring.topics.user.control;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
@@ -18,14 +19,9 @@ public class UserServiceImplementation implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
+    private PasswordEncoder passwordEncoder;
     private ModelMapper mapper;
 
-    //TODO: move it to setter?
-    public UserServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, ModelMapper mapper) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.mapper = mapper;
-    }
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
@@ -36,6 +32,7 @@ public class UserServiceImplementation implements UserService {
         return userRepository.findOptionalByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
+    //TODO: create some response DTO
     @Override
     public User registerNewUser(UserDTO userDTO) {
         String email = userDTO.getEmail();
@@ -45,6 +42,9 @@ public class UserServiceImplementation implements UserService {
         }
 
         User user = mapper.map(userDTO, User.class);
+        String encodedPassword = encodeUserPassword(user);
+        user.setPassword(encodedPassword);
+
         Role role = retrieveUserRoleForNewUser();
         Set<Role> userRoles = Set.of(role);
         user.setRoles(userRoles);
@@ -52,13 +52,20 @@ public class UserServiceImplementation implements UserService {
         return userRepository.save(user);
     }
 
+    private boolean emailExists(String email) {
+        return userRepository.findOptionalByEmail(email).isPresent();
+    }
+
+    private String encodeUserPassword(User user) {
+        String password = user.getPassword();
+        String encodedPassword = passwordEncoder.encode(password);
+
+        return encodedPassword;
+    }
+
     private Role retrieveUserRoleForNewUser() {
         return roleRepository.findOptionalByName("USER")
                 .orElseThrow(() -> new IllegalStateException("Error during creating a user"));
-    }
-
-    private boolean emailExists(String email) {
-        return userRepository.findOptionalByEmail(email).isPresent();
     }
 
     public UserRepository getUserRepository() {
@@ -67,5 +74,17 @@ public class UserServiceImplementation implements UserService {
 
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void setMapper(ModelMapper mapper) {
+        this.mapper = mapper;
     }
 }

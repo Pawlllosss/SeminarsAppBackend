@@ -23,10 +23,7 @@ import pl.oczadly.spring.topics.user.authentication.token.JWTAuthenticationUnaut
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private JWTAuthenticationUnauthorizedResponseEntryPoint unauthorizedHandler;
-
-    //TODO: add bean config
     private JWTAuthenticationFilter authenticationFilter;
-
 
     public WebSecurityConfiguration(JWTAuthenticationUnauthorizedResponseEntryPoint unauthorizedHandler, JWTAuthenticationFilter authenticationFilter) {
         this.unauthorizedHandler = unauthorizedHandler;
