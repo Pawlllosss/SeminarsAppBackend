@@ -32,6 +32,9 @@ public class Privilege {
     @ManyToMany(mappedBy = "privileges")
     private Set<Role> roles;
 
+    public Privilege() {
+    }
+
     public Privilege(@NotBlank String name) {
         this.name = name;
     }

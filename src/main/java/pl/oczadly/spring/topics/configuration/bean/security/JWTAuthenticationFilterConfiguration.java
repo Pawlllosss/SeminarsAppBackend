@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.configuration.bean;
+package pl.oczadly.spring.topics.configuration.bean.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

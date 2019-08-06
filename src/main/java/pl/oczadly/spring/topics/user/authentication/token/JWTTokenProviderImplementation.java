@@ -51,6 +51,7 @@ public class JWTTokenProviderImplementation implements JWTTokenProvider {
                 .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
+
         return Long.parseLong(tokenBody.getSubject());
     }
 

@@ -1,6 +1,7 @@
 package pl.oczadly.spring.topics.user.control;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.oczadly.spring.topics.role.Role;
@@ -72,18 +73,22 @@ public class UserServiceImplementation implements UserService {
         return userRepository;
     }
 
+    @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @Autowired
     public void setRoleRepository(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
+    @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Autowired
     public void setMapper(ModelMapper mapper) {
         this.mapper = mapper;
     }

@@ -1,7 +1,9 @@
 package pl.oczadly.spring.topics.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.oczadly.spring.topics.privilege.Privilege;
@@ -21,12 +23,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PrivilegeRepository privilegeRepository;
-
-    public InitialDataLoader(UserRepository userRepository, RoleRepository roleRepository, PrivilegeRepository privilegeRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.privilegeRepository = privilegeRepository;
-    }
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -47,22 +44,8 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         Role adminRole = createUserRoleIfNotFoundOrReturnExisting("ADMIN", adminPrivileges);
         createUserRoleIfNotFoundOrReturnExisting("USER", userPrivileges);
 
-        User admin = new User();
-
-        admin.setEmail("admin@admin.com");
-        admin.setPassword("admin");
-        admin.setRoles(Set.of(adminRole));
-        admin.setEnabled(true);
-
-        userRepository.save(admin);
-
+        createUserIfNotFoundOrReturnExisting("admin@admin.com", "admin", Set.of(adminRole));
         isDataAlreadyLoaded = true;
-    }
-
-    private String crudAllPrivileges(String partOfPrivileges) {
-        final String crudAll = "CRUD_ALL";
-
-        return crudAll + "_" + partOfPrivileges;
     }
 
     private Privilege createPrivilegeIfNotFoundOrReturnExisting(String name) {
@@ -75,6 +58,12 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         return privilegeRepository.save(privilegeToSave);
     }
 
+    private String crudAllPrivileges(String partOfPrivileges) {
+        final String crudAll = "CRUD_ALL";
+
+        return crudAll + "_" + partOfPrivileges;
+    }
+
     private Role createUserRoleIfNotFoundOrReturnExisting(String roleName, Set<Privilege> privileges) {
         Optional<Role> role = roleRepository.findOptionalByName(roleName);
         return role.orElseGet(() -> persistRole(roleName, privileges));
@@ -83,5 +72,42 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     private Role persistRole(String roleName, Set<Privilege> privileges) {
         Role roleToPersist = new Role(roleName, privileges);
         return roleRepository.save(roleToPersist);
+    }
+
+    private User createUserIfNotFoundOrReturnExisting(String email, String password, Set<Role> userRoles) {
+        Optional<User> user = userRepository.findOptionalByEmail(email);
+        return user.orElseGet(() -> persistUser(email, password, userRoles));
+    }
+
+    private User persistUser(String email, String password, Set<Role> userRoles) {
+        User user = new User();
+        String encodedPassword = passwordEncoder.encode(password);
+
+        user.setEmail(email);
+        user.setPassword(encodedPassword);
+        user.setRoles(userRoles);
+        user.setEnabled(true);
+
+        return userRepository.save(user);
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
+    @Autowired
+    public void setPrivilegeRepository(PrivilegeRepository privilegeRepository) {
+        this.privilegeRepository = privilegeRepository;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 }

@@ -44,6 +44,9 @@ public class Role {
     )
     private Set<Privilege> privileges;
 
+    public Role() {
+    }
+
     public Role(@NotBlank String name, Set<Privilege> privileges) {
         this.name = name;
         this.privileges = privileges;

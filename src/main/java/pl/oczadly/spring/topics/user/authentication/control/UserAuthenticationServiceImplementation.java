@@ -1,5 +1,6 @@
 package pl.oczadly.spring.topics.user.authentication.control;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -68,14 +69,17 @@ public class UserAuthenticationServiceImplementation implements UserAuthenticati
         context.setAuthentication(authentication);
     }
 
+    @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
+    @Autowired
     public void setTokenProvider(JWTTokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
+    @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
