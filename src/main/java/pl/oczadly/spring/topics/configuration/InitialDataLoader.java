@@ -34,12 +34,12 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
         Privilege readPrivilege = createPrivilegeIfNotFoundOrReturnExisting("READ");
 
-        Privilege crudCoursePrivelege = createPrivilegeIfNotFoundOrReturnExisting(crudAllPrivileges("COURSES"));
-        Privilege crudTopicPrivelege = createPrivilegeIfNotFoundOrReturnExisting(crudAllPrivileges("TOPICS"));
+        Privilege crudCoursePrivilege = createPrivilegeIfNotFoundOrReturnExisting(crudAllPrivileges("COURSES"));
+        Privilege crudTopicPrivilege = createPrivilegeIfNotFoundOrReturnExisting(crudAllPrivileges("TOPICS"));
         Privilege crudUsersPrivilege = createPrivilegeIfNotFoundOrReturnExisting(crudAllPrivileges("USERS"));
 
         Set<Privilege> userPrivileges = Set.of(readPrivilege);
-        Set<Privilege> adminPrivileges = Set.of(readPrivilege, crudCoursePrivelege, crudTopicPrivelege, crudUsersPrivilege);
+        Set<Privilege> adminPrivileges = Set.of(readPrivilege, crudCoursePrivilege, crudTopicPrivilege, crudUsersPrivilege);
 
         Role adminRole = createUserRoleIfNotFoundOrReturnExisting("ADMIN", adminPrivileges);
         createUserRoleIfNotFoundOrReturnExisting("USER", userPrivileges);

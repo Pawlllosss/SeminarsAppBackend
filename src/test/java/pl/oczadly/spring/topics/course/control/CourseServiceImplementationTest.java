@@ -41,7 +41,6 @@ public class CourseServiceImplementationTest {
         }
     }
 
-    @Autowired
     private CourseService courseService;
 
     @MockBean
@@ -91,5 +90,10 @@ public class CourseServiceImplementationTest {
 
     private void verifyCourseRepositoryFindAllCalledOnce() {
         verify(courseRepository, times(1)).findAll();
+    }
+
+    @Autowired
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
     }
 }

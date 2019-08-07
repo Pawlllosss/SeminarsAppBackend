@@ -2,7 +2,6 @@ package pl.oczadly.spring.topics.user.entity;
 
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.core.userdetails.UserDetails;
 import pl.oczadly.spring.topics.role.Role;
 
 import javax.persistence.Column;

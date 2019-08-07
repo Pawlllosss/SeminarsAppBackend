@@ -27,9 +27,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private UserAuthenticationService authenticationService;
     private JWTTokenProvider tokenProvider;
 
-    public JWTAuthenticationFilter() {
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
