@@ -1,5 +1,6 @@
 package pl.oczadly.spring.topics.user.authentication.token;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_TOKEN_PREFIX = "BEARER ";
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
 
     private UserAuthenticationService authenticationService;
     private JWTTokenProvider tokenProvider;
@@ -42,30 +43,40 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private Optional<String> getTokenFromRequest(HttpServletRequest request) {
         String authorizationHeader = getAuthorizationHeader(request);
 
-        if(isTokenValid(authorizationHeader)) {
-            return extractTokenFromAuthorizationHeader(authorizationHeader);
+        if(!isAuthorizationHeaderValid(authorizationHeader)) {
+            return Optional.empty();
         }
 
-        return Optional.empty();
+        String token = extractTokenFromAuthorizationHeader(authorizationHeader);
+
+        if(!isTokenValid(token)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(token);
     }
 
     private String getAuthorizationHeader(HttpServletRequest request) {
         return request.getHeader(AUTHORIZATION_HEADER);
     }
 
-    private boolean isTokenValid(String authorizationHeader) {
-        return containsBearerToken(authorizationHeader) && tokenProvider.validateToken(authorizationHeader);
+    private boolean isAuthorizationHeaderValid(String authorizationHeader) {
+        return containsBearerToken(authorizationHeader);
     }
 
     private boolean containsBearerToken(String authorizationHeader) {
         return StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(BEARER_TOKEN_PREFIX);
     }
 
-    private Optional<String> extractTokenFromAuthorizationHeader(String authorizationHeader) {
+    private boolean isTokenValid(String token) {
+        return tokenProvider.validateToken(token);
+    }
+
+    private String extractTokenFromAuthorizationHeader(String authorizationHeader) {
         int authorizationHeaderLength = authorizationHeader.length();
         String token = authorizationHeader.substring(BEARER_TOKEN_PREFIX.length(), authorizationHeaderLength);
 
-        return Optional.of(token);
+        return token;
     }
 
     private void setAuthentication(String token, HttpServletRequest request) {
@@ -86,10 +97,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         return authenticationToken;
     }
 
+    @Autowired
     public void setAuthenticationService(UserAuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
+    @Autowired
     public void setTokenProvider(JWTTokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
