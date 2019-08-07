@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics;
+package pl.oczadly.spring.topics.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
