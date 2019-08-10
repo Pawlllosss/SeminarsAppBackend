@@ -52,6 +52,7 @@ public class CourseRestController {
         return courseResourceAssembler.toResource(course);
     }
 
+    //TODO: change hasRole
     @PostMapping(produces = { "application/hal+json"})
     @PreAuthorize("hasRole('CRUD_ALL_COURSES')")
     public ResponseEntity<Resource<Course>> createCourse(@RequestBody Course course) {

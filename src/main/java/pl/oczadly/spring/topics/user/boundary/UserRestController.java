@@ -20,12 +20,13 @@ public class UserRestController {
     private UserService userService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
+    @PreAuthorize("hasAuthority('CRUD_ALL_USERS')")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping(value = "/{email}")
+    @PreAuthorize("hasAuthority('CRUD_ALL_USERS')")
     public User getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
