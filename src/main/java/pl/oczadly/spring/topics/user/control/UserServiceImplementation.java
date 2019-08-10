@@ -9,7 +9,7 @@ import pl.oczadly.spring.topics.role.RoleRepository;
 import pl.oczadly.spring.topics.user.entity.User;
 import pl.oczadly.spring.topics.user.entity.UserCredentialsDTO;
 import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
-import pl.oczadly.spring.topics.user.repository.UserNotFoundException;
+import pl.oczadly.spring.topics.user.entity.exception.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
 
 import java.util.List;
@@ -31,20 +31,22 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findOptionalByEmail(email).orElseThrow(UserNotFoundException::new);
+        return userRepository.findOptionalByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 
+    //TODO: throw incorrect email exception
+    //TODO: throw nickname exists exception
     @Override
     public User registerNewUser(UserCredentialsDTO userCredentialsDTO) {
         String email = userCredentialsDTO.getEmail();
 
         if (emailExists(email)) {
-            throw new EmailExistsException();
+            throw new EmailExistsException(email);
         }
 
         User user = mapper.map(userCredentialsDTO, User.class);
@@ -59,7 +61,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     private boolean emailExists(String email) {
-        return userRepository.findOptionalByEmail(email).isPresent();
+        return userRepository.existsByEmail(email);
     }
 
     private String encodeUserPassword(User user) {
