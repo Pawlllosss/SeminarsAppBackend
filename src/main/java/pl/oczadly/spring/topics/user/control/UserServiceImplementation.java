@@ -12,6 +12,7 @@ import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
 import pl.oczadly.spring.topics.user.repository.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -22,6 +23,11 @@ public class UserServiceImplementation implements UserService {
 
     private PasswordEncoder passwordEncoder;
     private ModelMapper mapper;
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     @Override
     public User getUserById(Long id) {
