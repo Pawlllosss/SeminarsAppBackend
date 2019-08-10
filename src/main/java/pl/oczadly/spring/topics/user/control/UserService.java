@@ -1,7 +1,7 @@
 package pl.oczadly.spring.topics.user.control;
 
 import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.UserDTO;
+import pl.oczadly.spring.topics.user.entity.UserCredentialsDTO;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface UserService {
 
     User getUserByEmail(String email);
 
-    User registerNewUser(UserDTO userDTO);
+    User registerNewUser(UserCredentialsDTO userCredentialsDTO);
 }

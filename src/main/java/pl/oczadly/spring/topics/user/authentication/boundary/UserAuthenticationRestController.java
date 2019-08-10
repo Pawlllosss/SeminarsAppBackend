@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.oczadly.spring.topics.user.authentication.control.UserAuthenticationService;
 import pl.oczadly.spring.topics.user.authentication.entity.UserAuthenticationResponseDTO;
-import pl.oczadly.spring.topics.user.entity.UserDTO;
+import pl.oczadly.spring.topics.user.entity.UserCredentialsDTO;
 
 import javax.validation.Valid;
 
@@ -21,8 +21,8 @@ public class UserAuthenticationRestController {
     }
 
     @PostMapping("/signin")
-    public UserAuthenticationResponseDTO signIn(@Valid @RequestBody UserDTO userDTO) {
-        return authenticationService.authenticateUser(userDTO);
+    public UserAuthenticationResponseDTO signIn(@Valid @RequestBody UserCredentialsDTO userCredentialsDTO) {
+        return authenticationService.authenticateUser(userCredentialsDTO);
     }
 
     public UserAuthenticationService getAuthenticationService() {

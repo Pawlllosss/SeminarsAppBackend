@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
 import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.UserDTO;
+import pl.oczadly.spring.topics.user.entity.UserCredentialsDTO;
 import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
 import pl.oczadly.spring.topics.user.repository.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
@@ -39,16 +39,15 @@ public class UserServiceImplementation implements UserService {
         return userRepository.findOptionalByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
-    //TODO: create some response DTO
     @Override
-    public User registerNewUser(UserDTO userDTO) {
-        String email = userDTO.getEmail();
+    public User registerNewUser(UserCredentialsDTO userCredentialsDTO) {
+        String email = userCredentialsDTO.getEmail();
 
         if (emailExists(email)) {
             throw new EmailExistsException();
         }
 
-        User user = mapper.map(userDTO, User.class);
+        User user = mapper.map(userCredentialsDTO, User.class);
         String encodedPassword = encodeUserPassword(user);
         user.setPassword(encodedPassword);
 

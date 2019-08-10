@@ -15,7 +15,7 @@ import pl.oczadly.spring.topics.user.authentication.entity.UserAuthenticationRes
 import pl.oczadly.spring.topics.user.authentication.token.JWTTokenProvider;
 import pl.oczadly.spring.topics.user.control.UserService;
 import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.UserDTO;
+import pl.oczadly.spring.topics.user.entity.UserCredentialsDTO;
 
 @Service
 public class UserAuthenticationServiceImplementation implements UserAuthenticationService {
@@ -45,8 +45,8 @@ public class UserAuthenticationServiceImplementation implements UserAuthenticati
     }
 
     @Override
-    public UserAuthenticationResponseDTO authenticateUser(UserDTO userDTO) {
-        Authentication authentication = createAuthentication(userDTO);
+    public UserAuthenticationResponseDTO authenticateUser(UserCredentialsDTO userCredentialsDTO) {
+        Authentication authentication = createAuthentication(userCredentialsDTO);
         setAuthenticationContext(authentication);
 
         String token = tokenProvider.generateToken(authentication);
@@ -55,9 +55,9 @@ public class UserAuthenticationServiceImplementation implements UserAuthenticati
         return responseDTO;
     }
 
-    private Authentication createAuthentication(UserDTO userDTO) {
-        String email = userDTO.getEmail();
-        String password = userDTO.getPassword();
+    private Authentication createAuthentication(UserCredentialsDTO userCredentialsDTO) {
+        String email = userCredentialsDTO.getEmail();
+        String password = userCredentialsDTO.getPassword();
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
