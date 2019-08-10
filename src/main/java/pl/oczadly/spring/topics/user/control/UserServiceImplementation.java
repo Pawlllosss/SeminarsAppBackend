@@ -9,7 +9,7 @@ import pl.oczadly.spring.topics.role.RoleRepository;
 import pl.oczadly.spring.topics.user.entity.User;
 import pl.oczadly.spring.topics.user.entity.dto.UserRegisterDTO;
 import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
-import pl.oczadly.spring.topics.user.entity.exception.NickNameExistsException;
+import pl.oczadly.spring.topics.user.entity.exception.NicknameExistsException;
 import pl.oczadly.spring.topics.user.entity.exception.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
 
@@ -49,10 +49,10 @@ public class UserServiceImplementation implements UserService {
             throw new EmailExistsException(email);
         }
 
-        String nickName = userRegisterDTO.getNickName();
+        String nickname = userRegisterDTO.getNickname();
 
-        if(nickNameExists(nickName)) {
-            throw new NickNameExistsException(nickName);
+        if(nicknameExists(nickname)) {
+            throw new NicknameExistsException(nickname);
         }
 
         User user = mapper.map(userRegisterDTO, User.class);
@@ -70,8 +70,8 @@ public class UserServiceImplementation implements UserService {
         return userRepository.existsByEmail(email);
     }
 
-    private boolean nickNameExists(String nickName) {
-        return userRepository.existsByNickName(nickName);
+    private boolean nicknameExists(String nickname) {
+        return userRepository.existsByNickName(nickname);
     }
 
     private String encodeUserPassword(User user) {

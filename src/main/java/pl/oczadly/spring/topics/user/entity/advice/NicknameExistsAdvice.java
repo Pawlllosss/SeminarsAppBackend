@@ -6,16 +6,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.oczadly.spring.topics.error.ErrorDTO;
-import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
-import pl.oczadly.spring.topics.user.entity.exception.NickNameExistsException;
+import pl.oczadly.spring.topics.user.entity.exception.NicknameExistsException;
 
 @ControllerAdvice
-public class NickNameExistsAdvice {
+public class NicknameExistsAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NickNameExistsException.class)
-    ErrorDTO nickNameExistsExceptionHandler(NickNameExistsException exception) {
+    @ExceptionHandler(NicknameExistsException.class)
+    ErrorDTO nicknameExistsExceptionHandler(NicknameExistsException exception) {
         return new ErrorDTO(exception.getMessage());
     }
 }
