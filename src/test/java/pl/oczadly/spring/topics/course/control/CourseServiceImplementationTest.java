@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.oczadly.spring.topics.course.entity.Course;
-import pl.oczadly.spring.topics.course.repository.CourseNotFoundException;
+import pl.oczadly.spring.topics.course.entity.CourseNotFoundException;
 import pl.oczadly.spring.topics.course.repository.CourseRepository;
 
 import java.util.List;

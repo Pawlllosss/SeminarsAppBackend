@@ -1,21 +1,20 @@
-package pl.oczadly.spring.topics.course.boundary;
+package pl.oczadly.spring.topics.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.oczadly.spring.topics.course.repository.CourseNotFoundException;
 import pl.oczadly.spring.topics.error.ErrorDTO;
+import pl.oczadly.spring.topics.exception.NotFoundException;
 
-//TODO: create separate Advice for generic NotFound exception
 @ControllerAdvice
-public class CourseNotFoundAdvice {
+public class NotFoundAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(CourseNotFoundException.class)
-    ErrorDTO courseNotFoundHandler(CourseNotFoundException exception) {
+    @ExceptionHandler(NotFoundException.class)
+    ErrorDTO notFoundHandler(NotFoundException exception) {
         return new ErrorDTO(exception.getMessage());
     }
 }
