@@ -71,7 +71,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     private boolean nicknameExists(String nickname) {
-        return userRepository.existsByNickName(nickname);
+        return userRepository.existsByNickname(nickname);
     }
 
     private String encodeUserPassword(User user) {
