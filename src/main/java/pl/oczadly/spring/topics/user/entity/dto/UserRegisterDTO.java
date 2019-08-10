@@ -1,11 +1,14 @@
-package pl.oczadly.spring.topics.user.entity;
+package pl.oczadly.spring.topics.user.entity.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class UserResponseDTO {
+public class UserRegisterDTO {
 
     @NotBlank
-    private Long id;
+    private String email;
+
+    @NotBlank
+    private String password;
 
     @NotBlank
     private String nickName;
@@ -16,12 +19,20 @@ public class UserResponseDTO {
     @NotBlank
     private String lastName;
 
-    public Long getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNickName() {

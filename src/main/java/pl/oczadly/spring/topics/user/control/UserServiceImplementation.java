@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
 import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.UserCredentialsDTO;
+import pl.oczadly.spring.topics.user.entity.dto.UserRegisterDTO;
 import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
+import pl.oczadly.spring.topics.user.entity.exception.NickNameExistsException;
 import pl.oczadly.spring.topics.user.entity.exception.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
 
@@ -40,16 +41,21 @@ public class UserServiceImplementation implements UserService {
     }
 
     //TODO: throw incorrect email exception
-    //TODO: throw nickname exists exception
     @Override
-    public User registerNewUser(UserCredentialsDTO userCredentialsDTO) {
-        String email = userCredentialsDTO.getEmail();
+    public User registerNewUser(UserRegisterDTO userRegisterDTO) {
+        String email = userRegisterDTO.getEmail();
 
-        if (emailExists(email)) {
+        if(emailExists(email)) {
             throw new EmailExistsException(email);
         }
 
-        User user = mapper.map(userCredentialsDTO, User.class);
+        String nickName = userRegisterDTO.getNickName();
+
+        if(nickNameExists(nickName)) {
+            throw new NickNameExistsException(nickName);
+        }
+
+        User user = mapper.map(userRegisterDTO, User.class);
         String encodedPassword = encodeUserPassword(user);
         user.setPassword(encodedPassword);
 
@@ -62,6 +68,10 @@ public class UserServiceImplementation implements UserService {
 
     private boolean emailExists(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    private boolean nickNameExists(String nickName) {
+        return userRepository.existsByNickName(nickName);
     }
 
     private String encodeUserPassword(User user) {

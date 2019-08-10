@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.oczadly.spring.topics.user.control.UserService;
 import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.UserCredentialsDTO;
-import pl.oczadly.spring.topics.user.entity.UserResponseDTO;
+import pl.oczadly.spring.topics.user.entity.dto.UserRegisterDTO;
+import pl.oczadly.spring.topics.user.entity.dto.UserSignUpDTO;
+import pl.oczadly.spring.topics.user.entity.dto.UserResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,8 +49,8 @@ public class UserRestController {
     }
 
     @PostMapping(produces = { "application/hal+json" })
-    public Resource<UserResponseDTO> registerNewUser(@RequestBody UserCredentialsDTO userCredentialsDTO) {
-        User user = userService.registerNewUser(userCredentialsDTO);
+    public Resource<UserResponseDTO> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
+        User user = userService.registerNewUser(userRegisterDTO);
         return userResourceAssembler.toResource(user);
     }
 
