@@ -52,9 +52,8 @@ public class CourseRestController {
         return courseResourceAssembler.toResource(course);
     }
 
-    //TODO: change hasRole
     @PostMapping(produces = { "application/hal+json"})
-    @PreAuthorize("hasRole('CRUD_ALL_COURSES')")
+    @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Resource<Course>> createCourse(@RequestBody Course course) {
         Course persistedCourse = courseService.createCourse(course);
 
@@ -65,7 +64,7 @@ public class CourseRestController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('CRUD_ALL_COURSES')")
+    @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Resource<Course>> updateCourse(@RequestBody Course course, @PathVariable Long id) {
         Course updatedCourse = courseService.updateCourse(course, id);
 
@@ -76,7 +75,7 @@ public class CourseRestController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('CRUD_ALL_COURSES')")
+    @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Course> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
 

@@ -69,7 +69,7 @@ public class CourseRestControllerTest {
         verify(courseService, times(1)).getAllCourses();
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "CRUD_ALL_COURSES")
     @Test
     public void whenCreateCourseThenReturnCreatedCourse() throws Exception {
         final String courseName = "Programowanie niskopoziomowe";
