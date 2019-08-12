@@ -12,6 +12,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.oczadly.spring.topics.TopicsApplication;
+import pl.oczadly.spring.topics.annotation.WithMockCrudAllCoursesAuthority;
 import pl.oczadly.spring.topics.course.control.CourseService;
 import pl.oczadly.spring.topics.course.entity.Course;
 
@@ -69,8 +70,8 @@ public class CourseRestControllerTest {
         verify(courseService, times(1)).getAllCourses();
     }
 
-    @WithMockUser(authorities = "CRUD_ALL_COURSES")
     @Test
+    @WithMockCrudAllCoursesAuthority
     public void whenCreateCourseThenReturnCreatedCourse() throws Exception {
         final String courseName = "Programowanie niskopoziomowe";
         Course course = new Course(courseName);
