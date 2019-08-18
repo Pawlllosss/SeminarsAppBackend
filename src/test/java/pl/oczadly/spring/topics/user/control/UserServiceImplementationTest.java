@@ -3,6 +3,8 @@ package pl.oczadly.spring.topics.user.control;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -36,17 +38,10 @@ public class UserServiceImplementationTest {
     private static final User USER1 = new User();
     private static final User USER2 = new User();
 
-    private UserService userService;
-
-    @MockBean
-    private UserRepository userRepository;
+    private UserRepository userRepository = Mockito.mock(UserRepository.class);
+    private UserService userService = createUserServiceImplementation(userRepository);
 
     @BeforeEach
-    public void preapareMocksAndTestedClass() {
-        prepareMocks();
-        createUserServiceImplementation();
-    }
-
     private void prepareMocks() {
         USER1.setId(USER1_ID);
         USER1.setEmail(USER1_EMAIL);
@@ -54,11 +49,10 @@ public class UserServiceImplementationTest {
         USER1.setFirstName(USER1_FIRSTNAME);
         USER1.setLastName(USER1_LASTNAME);
 
-        USER2.setId(USER1_ID);
-        USER2.setEmail(USER1_EMAIL);
-        USER2.setNickname(USER1_NICKNAME);
-        USER2.setFirstName(USER1_FIRSTNAME);
-        USER2.setLastName(USER1_LASTNAME);
+        USER2.setEmail(USER2_EMAIL);
+        USER2.setNickname(USER2_NICKNAME);
+        USER2.setFirstName(USER2_FIRSTNAME);
+        USER2.setLastName(USER2_LASTNAME);
 
         final List<User> allUsers = List.of(USER1, USER2);
 
@@ -67,10 +61,10 @@ public class UserServiceImplementationTest {
 
     }
 
-    private void  createUserServiceImplementation() {
+    private UserService  createUserServiceImplementation(UserRepository userRepository) {
         UserServiceImplementation userServiceImplementation = new UserServiceImplementation();
         userServiceImplementation.setUserRepository(userRepository);
-        userService = userServiceImplementation;
+        return userServiceImplementation;
     }
 
 
