@@ -5,16 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.ModelMap;
 import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
 import pl.oczadly.spring.topics.user.entity.User;
 import pl.oczadly.spring.topics.user.entity.dto.UserRegisterDTO;
-import pl.oczadly.spring.topics.user.entity.exception.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
 
 import java.util.Collections;
@@ -22,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -36,7 +32,6 @@ public class UserServiceImplementationTest {
     private static final String USER2_NICKNAME = "Faplo";
     private static final String USER1_EMAIL = "sztos@sztoslaw.com";
     private static final String USER2_EMAIL = "faplo@faplo.com";
-    private static final String NOT_EXISTING_EMAIL = "not@existing.com";
     private static final String USER1_FIRSTNAME = "Stefan";
     private static final String USER2_FIRSTNAME = "Paweł";
     private static final String USER1_LASTNAME = "Sztosłowicz";
@@ -44,7 +39,6 @@ public class UserServiceImplementationTest {
     private static final String USER1_PASSWORD = "bla4Bla!";
     private static final String ROLE_USER = "USER";
     private static final Long USER1_ID = 1L;
-    private static final Long NOT_EXISTING_ID = 111L;
     private static final User USER1 = new User();
     private static final User USER2 = new User();
 
@@ -107,6 +101,10 @@ public class UserServiceImplementationTest {
         given(userRepository.findAll()).willReturn(allUsers);
     }
 
+    private void verifyUserRepositoryFindAllCalledOnce() {
+        verify(userRepository, times(1)).findAll();
+    }
+
     @Test
     public void whenGetUserByExistingIdThenReturnUser() {
         mockFindById(USER1_ID, USER1);
@@ -125,9 +123,8 @@ public class UserServiceImplementationTest {
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
     }
 
-    @Test
-    public void whenGetUserByNotExistingIdThenTrowUserNotFoundException() {
-        assertThrows(UserNotFoundException.class, () -> userService.getUserById(NOT_EXISTING_ID));
+    private void verifyUserRepositoryFindByIdCalledOnce(Long calledId) {
+        verify(userRepository, times(1)).findById(calledId);
     }
 
     @Test
@@ -148,12 +145,9 @@ public class UserServiceImplementationTest {
         given(userRepository.findOptionalByEmail(email)).willReturn(Optional.of(user));
     }
 
-    @Test
-    public void whenGetUserByNotExistingEmailThenThrowUserNotFoundException() {
-        assertThrows(UserNotFoundException.class, () -> userService.getUserByEmail(NOT_EXISTING_EMAIL));
-        verifyUserRepositoryFindOptionalByEmailCalledOnce(NOT_EXISTING_EMAIL);
+    private void verifyUserRepositoryFindOptionalByEmailCalledOnce(String calledEmail) {
+        verify(userRepository, times(1)).findOptionalByEmail(calledEmail);
     }
-
 
     @Test
     public void whenRegisterNewUserHappyPathScenarioShouldReturnNewUser() {
@@ -182,17 +176,5 @@ public class UserServiceImplementationTest {
     private void mockUserRole() {
         Role userRole = new Role(ROLE_USER, Collections.emptySet());
         given(roleRepository.findOptionalByName(ROLE_USER)).willReturn(Optional.of(userRole));
-    }
-
-    private void verifyUserRepositoryFindAllCalledOnce() {
-        verify(userRepository, times(1)).findAll();
-    }
-
-    private void verifyUserRepositoryFindByIdCalledOnce(Long calledId) {
-        verify(userRepository, times(1)).findById(calledId);
-    }
-
-    private void verifyUserRepositoryFindOptionalByEmailCalledOnce(String calledEmail) {
-        verify(userRepository, times(1)).findOptionalByEmail(calledEmail);
     }
 }
