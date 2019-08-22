@@ -79,7 +79,7 @@ public class UserServiceImplementationTest {
 
     @Test
     public void whenGetAllUsersThenShouldReturnAllUsers() {
-        mockGetAllUsers();
+        mockFindAllUsers();
 
         final int expectedUsersSize = 2;
         List<User> usersFromService = userService.getAllUsers();
@@ -96,7 +96,7 @@ public class UserServiceImplementationTest {
                 .containsOnly(USER1_LASTNAME, USER2_LASTNAME);
     }
 
-    private void mockGetAllUsers() {
+    private void mockFindAllUsers() {
         final List<User> allUsers = List.of(USER1, USER2);
         given(userRepository.findAll()).willReturn(allUsers);
     }

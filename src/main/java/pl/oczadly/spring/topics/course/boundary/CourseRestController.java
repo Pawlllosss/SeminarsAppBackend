@@ -1,5 +1,6 @@
 package pl.oczadly.spring.topics.course.boundary;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -29,11 +30,6 @@ public class CourseRestController {
     private CourseService courseService;
 
     private CourseResourceAssembler courseResourceAssembler;
-
-    public CourseRestController(CourseService courseService, CourseResourceAssembler courseResourceAssembler) {
-        this.courseService = courseService;
-        this.courseResourceAssembler = courseResourceAssembler;
-    }
 
     @GetMapping(produces = { "application/hal+json" })
     public Resources<Resource<Course>> getAllCourses() {
@@ -81,5 +77,15 @@ public class CourseRestController {
 
         return ResponseEntity.noContent()
                 .build();
+    }
+
+    @Autowired
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
+    }
+
+    @Autowired
+    public void setCourseResourceAssembler(CourseResourceAssembler courseResourceAssembler) {
+        this.courseResourceAssembler = courseResourceAssembler;
     }
 }

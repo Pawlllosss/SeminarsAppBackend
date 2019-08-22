@@ -8,8 +8,6 @@ import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
 import pl.oczadly.spring.topics.user.entity.User;
 import pl.oczadly.spring.topics.user.entity.dto.UserRegisterDTO;
-import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
-import pl.oczadly.spring.topics.user.entity.exception.NicknameExistsException;
 import pl.oczadly.spring.topics.user.entity.exception.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
 
@@ -19,6 +17,7 @@ import java.util.Set;
 @Service
 public class UserServiceImplementation implements UserService {
 
+    private UserValidationService userValidationService;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
@@ -40,20 +39,9 @@ public class UserServiceImplementation implements UserService {
         return userRepository.findOptionalByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 
-    //TODO: throw incorrect email exception
     @Override
     public User registerNewUser(UserRegisterDTO userRegisterDTO) {
-        String email = userRegisterDTO.getEmail();
-
-        if(emailExists(email)) {
-            throw new EmailExistsException(email);
-        }
-
-        String nickname = userRegisterDTO.getNickname();
-
-        if(nicknameExists(nickname)) {
-            throw new NicknameExistsException(nickname);
-        }
+        userValidationService.validateUserRegisterDTO(userRegisterDTO);
 
         User user = mapper.map(userRegisterDTO, User.class);
         String encodedPassword = encodeUserPassword(user);
@@ -64,14 +52,6 @@ public class UserServiceImplementation implements UserService {
         user.setRoles(userRoles);
 
         return userRepository.save(user);
-    }
-
-    private boolean emailExists(String email) {
-        return userRepository.existsByEmail(email);
-    }
-
-    private boolean nicknameExists(String nickname) {
-        return userRepository.existsByNickname(nickname);
     }
 
     private String encodeUserPassword(User user) {
@@ -86,8 +66,9 @@ public class UserServiceImplementation implements UserService {
                 .orElseThrow(() -> new IllegalStateException("Error during creating a user"));
     }
 
-    public UserRepository getUserRepository() {
-        return userRepository;
+    @Autowired
+    public void setUserValidationService(UserValidationService userValidationService) {
+        this.userValidationService = userValidationService;
     }
 
     @Autowired
