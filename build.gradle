@@ -17,35 +17,39 @@ repositories {
 }
 
 dependencies {
-	compile 'javax.xml.bind:jaxb-api:2.3.0'
-	compile 'javax.activation:activation:1.1'
-	compile 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
-	compile "org.springframework.boot:spring-boot-starter-hateoas"
-	compile 'org.postgresql:postgresql'
-	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.5'
+	implementation 'javax.xml.bind:jaxb-api:2.3.0'
+	implementation 'javax.activation:activation:1.1'
+	implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
+	implementation "org.springframework.boot:spring-boot-starter-hateoas"
+	implementation 'org.postgresql:postgresql'
+	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.5'
 
-	compile 'io.jsonwebtoken:jjwt-api:0.10.7'
+	implementation 'io.jsonwebtoken:jjwt-api:0.10.7'
 	runtime 'io.jsonwebtoken:jjwt-impl:0.10.7', 'io.jsonwebtoken:jjwt-jackson:0.10.7'
 
-	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.9'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.9'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter'
 
 	runtimeOnly 'com.h2database:h2'
 
-	testCompile "com.jayway.jsonpath:json-path"
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+	testImplementation "com.jayway.jsonpath:json-path"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.1'
-	compile group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.5.1'
-	testCompile 'org.mockito:mockito-core:3.0.0'
-	testCompile 'org.mockito:mockito-junit-jupiter:3.0.0'
-	testCompile 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+	testImplementation 'org.mockito:mockito-core:3.0.0'
+	testImplementation 'org.mockito:mockito-junit-jupiter:3.0.0'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.hamcrest:hamcrest:2.1'
 
+	testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
+}
+
+test {
+	useJUnitPlatform()
 }
