@@ -1,17 +1,16 @@
 package pl.oczadly.spring.topics.course.boundary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.oczadly.spring.topics.TopicsApplication;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import pl.oczadly.spring.topics.annotation.WithMockCrudAllCoursesAuthority;
 import pl.oczadly.spring.topics.course.control.CourseService;
 import pl.oczadly.spring.topics.course.entity.Course;
 
@@ -28,49 +27,60 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TopicsApplication.class)
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 public class CourseRestControllerTest {
 
-    @Autowired
+    private static final String COURSE_NAME_2 = "Programowanie niskopoziomowe";
+    private static final String COURSE_NAME_1 = "Inżynieria oprogramowania";
+    private static final String COURSE_NAME_3 = "Sieci komputerowe";
+
     private MockMvc mockMvc;
-
-    @MockBean
-    private CourseService courseService;
-
     private ObjectMapper objectMapper;
 
-    public CourseRestControllerTest() {
+    @Mock
+    private CourseService courseService;
+
+    @InjectMocks
+    private CourseRestController courseRestController;
+
+    @BeforeEach
+    public void setUp() {
         objectMapper = new ObjectMapper();
+        mockMvc = MockMvcBuilders.standaloneSetup(courseRestController).build();
+
+        courseRestController.setCourseResourceAssembler(new CourseResourceAssembler());
     }
 
     @Test
     public void whenGetAllCoursesThenReturnAllCoursesAsJson() throws Exception {
-        final String courseName1 = "Inżynieria oprogramowania";
-        final String courseName2 = "Programowanie niskopoziomowe";
-        final String courseName3 = "Sieci komputerowe";
-
-        List<Course> courses = List.of(
-                new Course(courseName1),
-                new Course(courseName2),
-                new Course(courseName3)
-        );
-
-        given(courseService.getAllCourses()).willReturn(courses);
+        mockGetAllCourses();
 
         mockMvc.perform(get("/course").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.courses", hasSize(3)))
-                .andExpect(jsonPath("$._embedded.courses[0].name", is(courseName1)))
-                .andExpect(jsonPath("$._embedded.courses[1].name", is(courseName2)))
-                .andExpect(jsonPath("$._embedded.courses[2].name", is(courseName3)));
+                .andExpect(jsonPath("$.content", hasSize(3)))
+                .andExpect(jsonPath("$.content[0].name", is(COURSE_NAME_1)))
+                .andExpect(jsonPath("$.content[1].name", is(COURSE_NAME_2)))
+                .andExpect(jsonPath("$.content[2].name", is(COURSE_NAME_3)));
 
+        verifyGetAllCoursesCalledOnce();
+    }
+
+    private void mockGetAllCourses() {
+        List<Course> courses = List.of(
+                new Course(COURSE_NAME_1),
+                new Course(COURSE_NAME_2),
+                new Course(COURSE_NAME_3)
+        );
+
+        given(courseService.getAllCourses()).willReturn(courses);
+    }
+
+    private void verifyGetAllCoursesCalledOnce() {
         verify(courseService, times(1)).getAllCourses();
     }
 
-    @WithMockUser(roles = "ADMIN")
     @Test
+    @WithMockCrudAllCoursesAuthority
     public void whenCreateCourseThenReturnCreatedCourse() throws Exception {
         final String courseName = "Programowanie niskopoziomowe";
         Course course = new Course(courseName);

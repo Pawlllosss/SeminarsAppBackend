@@ -1,9 +1,11 @@
 package pl.oczadly.spring.topics.course.boundary;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,11 +31,6 @@ public class CourseRestController {
 
     private CourseResourceAssembler courseResourceAssembler;
 
-    public CourseRestController(CourseService courseService, CourseResourceAssembler courseResourceAssembler) {
-        this.courseService = courseService;
-        this.courseResourceAssembler = courseResourceAssembler;
-    }
-
     @GetMapping(produces = { "application/hal+json" })
     public Resources<Resource<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
@@ -52,6 +49,7 @@ public class CourseRestController {
     }
 
     @PostMapping(produces = { "application/hal+json"})
+    @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Resource<Course>> createCourse(@RequestBody Course course) {
         Course persistedCourse = courseService.createCourse(course);
 
@@ -62,6 +60,7 @@ public class CourseRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Resource<Course>> updateCourse(@RequestBody Course course, @PathVariable Long id) {
         Course updatedCourse = courseService.updateCourse(course, id);
 
@@ -72,6 +71,7 @@ public class CourseRestController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Course> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
 
@@ -79,4 +79,13 @@ public class CourseRestController {
                 .build();
     }
 
+    @Autowired
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
+    }
+
+    @Autowired
+    public void setCourseResourceAssembler(CourseResourceAssembler courseResourceAssembler) {
+        this.courseResourceAssembler = courseResourceAssembler;
+    }
 }

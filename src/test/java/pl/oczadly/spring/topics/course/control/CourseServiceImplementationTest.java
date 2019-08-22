@@ -1,15 +1,12 @@
 package pl.oczadly.spring.topics.course.control;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.oczadly.spring.topics.course.entity.Course;
-import pl.oczadly.spring.topics.course.repository.CourseNotFoundException;
+import pl.oczadly.spring.topics.course.entity.CourseNotFoundException;
 import pl.oczadly.spring.topics.course.repository.CourseRepository;
 
 import java.util.List;
@@ -21,7 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CourseServiceImplementationTest {
 
     private static final String COURSE1_NAME = "Programowanie niskopoziomowe";
@@ -33,31 +30,16 @@ public class CourseServiceImplementationTest {
     private static final Course COURSE2 = new Course(COURSE2_NAME);
     private static final Course COURSE3 = new Course(COURSE3_NAME);
 
-    @TestConfiguration
-    static class CourseServiceImplementationTestConfiguration {
-        @Bean
-        public CourseService courseService() {
-            return new CourseServiceImplementation();
-        }
-    }
-
-    private CourseService courseService;
-
-    @MockBean
+    @Mock
     private CourseRepository courseRepository;
 
-    @Before
-    public void setUpMocks() {
-        COURSE1.setId(COURSE1_ID);
-
-        final List<Course> allCourses = List.of(COURSE1, COURSE2, COURSE3);
-
-        given(courseRepository.findAll()).willReturn(allCourses);
-        given(courseRepository.findById(COURSE1_ID)).willReturn(Optional.of(COURSE1));
-    }
+    @InjectMocks
+    private CourseServiceImplementation courseService;
 
     @Test
     public void whenGetAllCoursesThenShouldReturnAllCourses() {
+        mockFindAllUsers();
+
         List<Course> coursesFromService = courseService.getAllCourses();
         final int expectedCoursesSize = 3;
         verifyCourseRepositoryFindAllCalledOnce();
@@ -66,12 +48,24 @@ public class CourseServiceImplementationTest {
                 .containsOnly(COURSE1_NAME, COURSE2_NAME, COURSE3_NAME);
     }
 
+    private void mockFindAllUsers() {
+        final List<Course> allCourses = List.of(COURSE1, COURSE2, COURSE3);
+        given(courseRepository.findAll()).willReturn(allCourses);
+    }
+
     @Test
     public void whenGetCourseByExistingIdThenReturnCourse() {
+        COURSE1.setId(COURSE1_ID);
+        mockFindById(COURSE1_ID, COURSE1);
+
         Course courseFromService = courseService.getCourseById(COURSE1_ID);
         verifyCourseRepositoryFindByIdCalledOnce(COURSE1_ID);
         assertThat(courseFromService.getId()).isEqualTo(COURSE1_ID);
         assertThat(courseFromService.getName()).isEqualTo(COURSE1_NAME);
+    }
+
+    private void mockFindById(Long courseId, Course course) {
+        given(courseRepository.findById(courseId)).willReturn(Optional.of(course));
     }
 
     @Test
@@ -90,10 +84,5 @@ public class CourseServiceImplementationTest {
 
     private void verifyCourseRepositoryFindAllCalledOnce() {
         verify(courseRepository, times(1)).findAll();
-    }
-
-    @Autowired
-    public void setCourseService(CourseService courseService) {
-        this.courseService = courseService;
     }
 }

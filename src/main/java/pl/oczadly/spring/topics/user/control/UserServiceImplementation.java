@@ -7,16 +7,17 @@ import org.springframework.stereotype.Service;
 import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
 import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.UserDTO;
-import pl.oczadly.spring.topics.user.entity.exception.EmailExistsException;
-import pl.oczadly.spring.topics.user.repository.UserNotFoundException;
+import pl.oczadly.spring.topics.user.entity.dto.UserRegisterDTO;
+import pl.oczadly.spring.topics.user.entity.exception.UserNotFoundException;
 import pl.oczadly.spring.topics.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserServiceImplementation implements UserService {
 
+    private UserValidationService userValidationService;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
@@ -24,25 +25,25 @@ public class UserServiceImplementation implements UserService {
     private ModelMapper mapper;
 
     @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findOptionalByEmail(email).orElseThrow(UserNotFoundException::new);
+        return userRepository.findOptionalByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 
-    //TODO: create some response DTO
     @Override
-    public User registerNewUser(UserDTO userDTO) {
-        String email = userDTO.getEmail();
+    public User registerNewUser(UserRegisterDTO userRegisterDTO) {
+        userValidationService.validateUserRegisterDTO(userRegisterDTO);
 
-        if (emailExists(email)) {
-            throw new EmailExistsException();
-        }
-
-        User user = mapper.map(userDTO, User.class);
+        User user = mapper.map(userRegisterDTO, User.class);
         String encodedPassword = encodeUserPassword(user);
         user.setPassword(encodedPassword);
 
@@ -51,10 +52,6 @@ public class UserServiceImplementation implements UserService {
         user.setRoles(userRoles);
 
         return userRepository.save(user);
-    }
-
-    private boolean emailExists(String email) {
-        return userRepository.findOptionalByEmail(email).isPresent();
     }
 
     private String encodeUserPassword(User user) {
@@ -69,8 +66,9 @@ public class UserServiceImplementation implements UserService {
                 .orElseThrow(() -> new IllegalStateException("Error during creating a user"));
     }
 
-    public UserRepository getUserRepository() {
-        return userRepository;
+    @Autowired
+    public void setUserValidationService(UserValidationService userValidationService) {
+        this.userValidationService = userValidationService;
     }
 
     @Autowired

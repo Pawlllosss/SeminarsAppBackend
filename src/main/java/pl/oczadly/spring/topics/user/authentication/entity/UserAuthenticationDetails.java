@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.user.entity.User;
 
 import java.util.Collection;
@@ -92,7 +93,9 @@ public class UserAuthenticationDetails implements UserDetails {
         public Builder fromUser(User user) {
             Set<GrantedAuthority> roles = user.getRoles()
                     .stream()
-                    .map(role -> new SimpleGrantedAuthority(role.getName()))
+                    .map(Role::getPrivileges)
+                    .flatMap(Set::stream)
+                    .map(privilege -> new SimpleGrantedAuthority(privilege.getName()))
                     .collect(Collectors.toSet());
 
             this.authorities = roles;

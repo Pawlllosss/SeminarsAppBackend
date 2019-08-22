@@ -20,7 +20,7 @@ import pl.oczadly.spring.topics.user.authentication.token.JWTAuthenticationUnaut
 
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(
         securedEnabled = true,
         jsr250Enabled = true,
@@ -64,6 +64,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/**/*.js")
                     .permitAll()
                 .antMatchers("/authentication/**")
+                    .permitAll()
+                .antMatchers(HttpMethod.POST, "/user")
                     .permitAll()
                 .antMatchers(HttpMethod.GET, "/course/**")
                     .permitAll()

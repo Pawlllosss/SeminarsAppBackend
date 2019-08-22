@@ -1,5 +1,6 @@
 package pl.oczadly.spring.topics.role;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pl.oczadly.spring.topics.privilege.Privilege;
 import pl.oczadly.spring.topics.user.entity.User;
@@ -34,6 +35,7 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Set<User> users;
 
     @ManyToMany(fetch = FetchType.LAZY)
