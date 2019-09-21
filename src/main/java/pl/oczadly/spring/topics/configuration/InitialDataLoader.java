@@ -10,8 +10,8 @@ import pl.oczadly.spring.topics.privilege.Privilege;
 import pl.oczadly.spring.topics.privilege.PrivilegeRepository;
 import pl.oczadly.spring.topics.role.Role;
 import pl.oczadly.spring.topics.role.RoleRepository;
-import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.repository.UserRepository;
+import pl.oczadly.spring.topics.user.management.entity.User;
+import pl.oczadly.spring.topics.user.management.control.UserRepository;
 
 import java.util.Optional;
 import java.util.Set;

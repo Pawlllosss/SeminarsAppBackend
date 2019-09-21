@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.oczadly.spring.topics.user.authentication.entity.UserAuthenticationDetails;
 import pl.oczadly.spring.topics.user.authentication.entity.UserAuthenticationResponseDTO;
-import pl.oczadly.spring.topics.user.authentication.token.JWTTokenProvider;
-import pl.oczadly.spring.topics.user.control.UserService;
-import pl.oczadly.spring.topics.user.entity.User;
-import pl.oczadly.spring.topics.user.entity.dto.UserSignUpDTO;
+import pl.oczadly.spring.topics.user.authentication.control.token.JWTTokenProvider;
+import pl.oczadly.spring.topics.user.management.control.UserService;
+import pl.oczadly.spring.topics.user.management.entity.User;
+import pl.oczadly.spring.topics.user.management.entity.dto.UserSignUpDTO;
 
 @Service
 public class UserAuthenticationServiceImplementation implements UserAuthenticationService {

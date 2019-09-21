@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.oczadly.spring.topics.role.Role;
-import pl.oczadly.spring.topics.user.entity.User;
+import pl.oczadly.spring.topics.user.management.entity.User;
 
 import java.util.Collection;
 import java.util.Set;
