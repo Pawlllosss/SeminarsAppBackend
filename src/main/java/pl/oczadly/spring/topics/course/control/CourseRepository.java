@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.course.repository;
+package pl.oczadly.spring.topics.course.control;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

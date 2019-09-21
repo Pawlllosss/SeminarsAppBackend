@@ -24,14 +24,14 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping(value = "/course", produces = { "application/hal+json" })
 public class CourseRestController {
 
     private CourseService courseService;
 
     private CourseResourceAssembler courseResourceAssembler;
 
-    @GetMapping(produces = { "application/hal+json" })
+    @GetMapping
     public Resources<Resource<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
         List<Resource<Course>> coursesResponse = courses.stream()
@@ -42,13 +42,13 @@ public class CourseRestController {
         return new Resources<>(coursesResponse, selfLink);
     }
 
-    @GetMapping(value = "/{id}", produces = { "application/hal+json"})
+    @GetMapping("/{id}")
     public Resource<Course> getCourseById(@PathVariable Long id) {
         Course course = courseService.getCourseById(id);
         return courseResourceAssembler.toResource(course);
     }
 
-    @PostMapping(produces = { "application/hal+json"})
+    @PostMapping
     @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Resource<Course>> createCourse(@RequestBody Course course) {
         Course persistedCourse = courseService.createCourse(course);
@@ -74,7 +74,6 @@ public class CourseRestController {
     @PreAuthorize("hasAuthority('CRUD_ALL_COURSES')")
     public ResponseEntity<Course> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
-
         return ResponseEntity.noContent()
                 .build();
     }
