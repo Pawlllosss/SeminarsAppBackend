@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.oczadly.spring.topics.user.authentication.control.UserAuthenticationService;
 import pl.oczadly.spring.topics.user.authentication.entity.UserAuthenticationResponseDTO;
-import pl.oczadly.spring.topics.user.entity.dto.UserSignUpDTO;
+import pl.oczadly.spring.topics.user.management.entity.dto.UserSignUpDTO;
 
 import javax.validation.Valid;
 

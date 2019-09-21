@@ -15,8 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.oczadly.spring.topics.user.authentication.control.UserAuthenticationService;
-import pl.oczadly.spring.topics.user.authentication.token.JWTAuthenticationFilter;
-import pl.oczadly.spring.topics.user.authentication.token.JWTAuthenticationUnauthorizedResponseEntryPoint;
+import pl.oczadly.spring.topics.user.authentication.control.token.JWTAuthenticationFilter;
+import pl.oczadly.spring.topics.user.authentication.control.token.JWTAuthenticationUnauthorizedResponseEntryPoint;
 
 
 @Configuration
