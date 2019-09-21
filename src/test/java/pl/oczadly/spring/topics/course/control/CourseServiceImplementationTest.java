@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.oczadly.spring.topics.course.entity.Course;
 import pl.oczadly.spring.topics.course.entity.CourseNotFoundException;
-import pl.oczadly.spring.topics.course.repository.CourseRepository;
 
 import java.util.List;
 import java.util.Optional;
