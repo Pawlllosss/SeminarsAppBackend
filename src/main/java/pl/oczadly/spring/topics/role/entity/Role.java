@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -45,6 +46,9 @@ public class Role {
             inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id")
     )
     private Set<Privilege> privileges;
+
+    @OneToOne(mappedBy = "role")
+    private CourseVoterRole courseVoterRole;
 
     public Role() {
     }
@@ -84,5 +88,13 @@ public class Role {
 
     public void setPrivileges(Set<Privilege> privileges) {
         this.privileges = privileges;
+    }
+
+    public CourseVoterRole getCourseVoterRole() {
+        return courseVoterRole;
+    }
+
+    public void setCourseVoterRole(CourseVoterRole courseVoterRole) {
+        this.courseVoterRole = courseVoterRole;
     }
 }

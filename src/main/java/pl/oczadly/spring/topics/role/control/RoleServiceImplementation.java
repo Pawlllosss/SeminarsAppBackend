@@ -45,9 +45,7 @@ public class RoleServiceImplementation implements RoleService {
         Privilege privilege = createAndPersistVoterPrivilege(courseName);
         Role role = createAndPersistVoterRole(courseName, privilege);
 
-//        CourseVoterRole courseVoterRole = new CourseVoterRole(role, course);
-//        CourseVoterRole courseVoterRole = new CourseVoterRole(course);
-        CourseVoterRole courseVoterRole = new CourseVoterRole();
+        CourseVoterRole courseVoterRole = new CourseVoterRole(role);
         CourseVoterRole persistedCourseVoterRole = voterRoleRepository.save(courseVoterRole);
 
         return persistedCourseVoterRole;
