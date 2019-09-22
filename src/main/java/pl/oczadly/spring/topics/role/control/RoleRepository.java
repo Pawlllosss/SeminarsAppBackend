@@ -1,6 +1,7 @@
-package pl.oczadly.spring.topics.role;
+package pl.oczadly.spring.topics.role.control;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import pl.oczadly.spring.topics.role.entity.Role;
 
 import java.util.Optional;
 

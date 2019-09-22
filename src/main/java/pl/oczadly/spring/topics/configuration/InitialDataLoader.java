@@ -6,10 +6,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.oczadly.spring.topics.privilege.Privilege;
-import pl.oczadly.spring.topics.privilege.PrivilegeRepository;
-import pl.oczadly.spring.topics.role.Role;
-import pl.oczadly.spring.topics.role.RoleRepository;
+import pl.oczadly.spring.topics.privilege.entity.Privilege;
+import pl.oczadly.spring.topics.privilege.control.PrivilegeRepository;
+import pl.oczadly.spring.topics.role.entity.Role;
+import pl.oczadly.spring.topics.role.control.RoleRepository;
 import pl.oczadly.spring.topics.user.management.entity.User;
 import pl.oczadly.spring.topics.user.management.control.UserRepository;
 
