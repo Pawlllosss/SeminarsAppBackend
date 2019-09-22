@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.oczadly.spring.topics.role.Role;
-import pl.oczadly.spring.topics.role.RoleRepository;
+import pl.oczadly.spring.topics.role.entity.Role;
+import pl.oczadly.spring.topics.role.control.RoleRepository;
 import pl.oczadly.spring.topics.user.management.entity.User;
 import pl.oczadly.spring.topics.user.management.entity.dto.UserRegisterDTO;
 

@@ -1,11 +1,17 @@
 package pl.oczadly.spring.topics.course.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import pl.oczadly.spring.topics.role.entity.CourseVoterRole;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +30,11 @@ public class Course{
 
     @NotBlank
     private String name;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "course_voter_role_id", referencedColumnName = "id")
+    private CourseVoterRole courseVoterRole;
 
     public Course() {
     }
@@ -46,6 +57,14 @@ public class Course{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CourseVoterRole getCourseVoterRole() {
+        return courseVoterRole;
+    }
+
+    public void setCourseVoterRole(CourseVoterRole courseVoterRole) {
+        this.courseVoterRole = courseVoterRole;
     }
 }
 

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.oczadly.spring.topics.course.entity.Course;
 import pl.oczadly.spring.topics.course.entity.CourseNotFoundException;
+import pl.oczadly.spring.topics.role.control.RoleService;
+import pl.oczadly.spring.topics.role.entity.CourseVoterRole;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
 public class CourseServiceImplementation implements CourseService {
 
     private CourseRepository courseRepository;
+
+    private RoleService roleService;
 
     public CourseServiceImplementation() {
     }
@@ -33,7 +37,12 @@ public class CourseServiceImplementation implements CourseService {
 
     @Override
     public Course createCourse(Course course) {
-        return courseRepository.save(course);
+        String courseName = course.getName();
+        CourseVoterRole courseVoterRole = roleService.createCourseVoterRole(courseName);
+        course.setCourseVoterRole(courseVoterRole);
+        Course persistedCourse = courseRepository.save(course);
+
+        return persistedCourse;
     }
 
     @Override
@@ -57,5 +66,10 @@ public class CourseServiceImplementation implements CourseService {
     @Autowired
     public void setCourseRepository(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 }

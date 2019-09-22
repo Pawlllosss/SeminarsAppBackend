@@ -1,8 +1,8 @@
-package pl.oczadly.spring.topics.role;
+package pl.oczadly.spring.topics.role.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import pl.oczadly.spring.topics.privilege.Privilege;
+import pl.oczadly.spring.topics.privilege.entity.Privilege;
 import pl.oczadly.spring.topics.user.management.entity.User;
 
 import javax.persistence.Entity;
