@@ -1,6 +1,9 @@
 package pl.oczadly.spring.topics.user.management.entity.dto;
 
+import pl.oczadly.spring.topics.role.entity.RoleDTO;
+
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 public class UserResponseDTO {
 
@@ -15,6 +18,9 @@ public class UserResponseDTO {
 
     @NotBlank
     private String lastName;
+
+    @NotBlank
+    private Set<RoleDTO> roles;
 
     public Long getId() {
         return id;
@@ -46,5 +52,13 @@ public class UserResponseDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Set<RoleDTO> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleDTO> roles) {
+        this.roles = roles;
     }
 }
