@@ -7,6 +7,4 @@ deploy:
   provider: heroku
   api-key:
     secure: $HEROKU_API_KEY
-  on:
-    branch: cors
   app: seminars-api
