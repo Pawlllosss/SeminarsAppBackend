@@ -1,8 +1,8 @@
-package pl.oczadly.spring.topics.role.entity;
+package pl.oczadly.spring.topics.privilege.entity;
 
 import javax.validation.constraints.NotBlank;
 
-public class RoleDTO {
+public class PrivilegeDTO {
 
     @NotBlank
     private Long id;

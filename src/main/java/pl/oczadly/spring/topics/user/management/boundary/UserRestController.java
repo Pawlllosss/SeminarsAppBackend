@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping(value = "user", produces = { "application/hal+json" })
 public class UserRestController {
 
     private UserService userService;
 
     private UserResourceAssembler userResourceAssembler;
 
-    @GetMapping(produces = { "application/hal+json" })
+    @GetMapping
     @PreAuthorize("hasAuthority('CRUD_ALL_USERS')")
     public Resources<Resource<UserResponseDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -47,7 +47,7 @@ public class UserRestController {
         return userResourceAssembler.toResource(user);
     }
 
-    @PostMapping(produces = { "application/hal+json" })
+    @PostMapping
     public Resource<UserResponseDTO> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
         User user = userService.registerNewUser(userRegisterDTO);
         return userResourceAssembler.toResource(user);

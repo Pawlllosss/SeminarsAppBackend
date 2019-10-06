@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -39,6 +40,21 @@ public class Privilege {
 
     public Privilege(@NotBlank String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Privilege privilege = (Privilege) o;
+        return Objects.equals(id, privilege.id) &&
+                Objects.equals(name, privilege.name) &&
+                Objects.equals(roles, privilege.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, roles);
     }
 
     public Long getId() {
