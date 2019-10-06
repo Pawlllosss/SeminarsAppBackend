@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.user.authentication.annotation;
+package pl.oczadly.spring.topics.user.authentication.boundary.annotation;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

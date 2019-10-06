@@ -1,5 +1,6 @@
 package pl.oczadly.spring.topics.user.management.entity.dto;
 
+import pl.oczadly.spring.topics.privilege.entity.PrivilegeDTO;
 import pl.oczadly.spring.topics.role.entity.RoleDTO;
 
 import javax.validation.constraints.NotBlank;
@@ -21,6 +22,9 @@ public class UserResponseDTO {
 
     @NotBlank
     private Set<RoleDTO> roles;
+
+    @NotBlank
+    private Set<PrivilegeDTO> privileges;
 
     public Long getId() {
         return id;
@@ -60,5 +64,13 @@ public class UserResponseDTO {
 
     public void setRoles(Set<RoleDTO> roles) {
         this.roles = roles;
+    }
+
+    public Set<PrivilegeDTO> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(Set<PrivilegeDTO> privileges) {
+        this.privileges = privileges;
     }
 }
