@@ -5,6 +5,7 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
 import pl.oczadly.spring.topics.course.entity.Course;
+import pl.oczadly.spring.topics.topic.boundary.TopicRestController;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -22,7 +23,9 @@ public class CourseResourceAssembler implements ResourceAssembler<Course, Resour
                 .withRel("update");
         Link deleteLink = linkTo(methodOn(CourseRestController.class).deleteCourse(courseId))
                 .withRel("delete");
+        Link topicsLink = linkTo(methodOn(TopicRestController.class).getTopicByCourseId(courseId))
+                .withRel("topics");
 
-        return new Resource<>(course, selfLink, updateLink, deleteLink);
+        return new Resource<>(course, selfLink, updateLink, deleteLink, topicsLink);
     }
 }
