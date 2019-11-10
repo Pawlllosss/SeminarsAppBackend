@@ -8,7 +8,7 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
 import pl.oczadly.spring.topics.privilege.entity.PrivilegeDTO;
 import pl.oczadly.spring.topics.role.entity.Role;
-import pl.oczadly.spring.topics.role.entity.RoleDTO;
+import pl.oczadly.spring.topics.role.entity.dto.RoleDTO;
 import pl.oczadly.spring.topics.user.management.entity.User;
 import pl.oczadly.spring.topics.user.management.entity.dto.UserResponseDTO;
 
@@ -35,7 +35,6 @@ public class UserResourceAssembler implements ResourceAssembler<User, Resource<U
                 .flatMap(Collection::stream)
                 .map(privilege -> modelMapper.map(privilege, PrivilegeDTO.class))
                 .collect(Collectors.toSet());
-
 
         Long userId = user.getId();
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
