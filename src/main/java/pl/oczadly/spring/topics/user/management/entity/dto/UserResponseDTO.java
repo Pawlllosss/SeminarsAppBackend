@@ -1,7 +1,7 @@
 package pl.oczadly.spring.topics.user.management.entity.dto;
 
 import pl.oczadly.spring.topics.privilege.entity.PrivilegeDTO;
-import pl.oczadly.spring.topics.role.entity.RoleDTO;
+import pl.oczadly.spring.topics.role.entity.dto.RoleDTO;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Set;

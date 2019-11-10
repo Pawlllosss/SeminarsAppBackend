@@ -4,19 +4,22 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.oczadly.spring.topics.role.entity.Role;
 import pl.oczadly.spring.topics.role.control.RoleRepository;
+import pl.oczadly.spring.topics.role.control.RoleService;
+import pl.oczadly.spring.topics.role.entity.Role;
 import pl.oczadly.spring.topics.user.management.entity.User;
 import pl.oczadly.spring.topics.user.management.entity.dto.UserRegisterDTO;
 import pl.oczadly.spring.topics.user.management.entity.exception.UserNotFoundException;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImplementation implements UserService {
 
     private UserValidationService userValidationService;
+    private RoleService roleService;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
@@ -65,9 +68,30 @@ public class UserServiceImplementation implements UserService {
                 .orElseThrow(() -> new IllegalStateException("Error during creating a user"));
     }
 
+    @Override
+    public User updateRoles(Set<Long> rolesId, Long id) {
+        Set<Role> newRoles = getRolesFromIds(rolesId);
+
+        User userToUpdate = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        userToUpdate.setRoles(newRoles);
+
+        return userRepository.save(userToUpdate);
+    }
+
+    private Set<Role> getRolesFromIds(Set<Long> newRolesId) {
+        return newRolesId.stream()
+                .map(roleService::getRoleById)
+                .collect(Collectors.toSet());
+    }
+
     @Autowired
     public void setUserValidationService(UserValidationService userValidationService) {
         this.userValidationService = userValidationService;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     @Autowired

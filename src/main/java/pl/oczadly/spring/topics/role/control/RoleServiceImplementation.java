@@ -8,7 +8,8 @@ import pl.oczadly.spring.topics.privilege.control.PrivilegeService;
 import pl.oczadly.spring.topics.privilege.entity.Privilege;
 import pl.oczadly.spring.topics.role.entity.CourseVoterRole;
 import pl.oczadly.spring.topics.role.entity.Role;
-import pl.oczadly.spring.topics.role.entity.RoleDTO;
+import pl.oczadly.spring.topics.role.entity.dto.RoleDTO;
+import pl.oczadly.spring.topics.role.entity.exception.RoleNotFoundException;
 
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,11 @@ public class RoleServiceImplementation implements RoleService {
                 .collect(Collectors.toList());
 
         return roleDTOs;
+    }
+
+    @Override
+    public Role getRoleById(Long id) {
+        return roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
     }
 
     @Override

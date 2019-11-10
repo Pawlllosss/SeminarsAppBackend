@@ -1,4 +1,4 @@
-package pl.oczadly.spring.topics.role.entity;
+package pl.oczadly.spring.topics.role.entity.dto;
 
 import javax.validation.constraints.NotBlank;
 
