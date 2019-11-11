@@ -40,6 +40,7 @@ public class TopicServiceImplementation implements TopicService {
         Topic topic = mapper.map(topicDTO, Topic.class);
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new CourseNotFoundException(courseId));
         topic.setCourse(course);
+
         return topicRepository.save(topic);
     }
 
@@ -55,7 +56,7 @@ public class TopicServiceImplementation implements TopicService {
 
     @Override
     public void deleteTopic(Long id) {
-        if(!topicRepository.existsById(id)) {
+        if (!topicRepository.existsById(id)) {
             throw new TopicNotFoundException(id);
         }
 
