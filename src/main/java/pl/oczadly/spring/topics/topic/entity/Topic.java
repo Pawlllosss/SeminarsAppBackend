@@ -23,6 +23,7 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "topics")
 @DynamicUpdate
 public class Topic {
+
     @Id
     @GeneratedValue(generator = "topic_generator")
     @SequenceGenerator(

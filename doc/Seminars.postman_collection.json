@@ -1,0 +1,759 @@
+{
+	"info": {
+		"_postman_id": "062f5377-1b49-4ac1-a43d-6538783efd7a",
+		"name": "Seminars",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "topic",
+			"item": [
+				{
+					"name": "AddTopic",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Wymagania\",\n\t\"description\": \"Scrum, Agile itd.\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/topic/course/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"topic",
+								"course",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTopicById",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Wymagania\",\n\t\"description\": \"Sposoby specyfikacji, opisu i analizy wymagań.\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/topic/12",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"topic",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Topic",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/topic/",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"topic",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TopicById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/topic/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"topic",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteTopicById",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/topic/102",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"topic",
+								"102"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TopicByCourseId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/topic/course/52",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"topic",
+								"course",
+								"52"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "course",
+			"item": [
+				{
+					"name": "Course",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/course/",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"course",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CourseById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/course/102",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"course",
+								"102"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Inżynieria oprogramowania\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/course/",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"course",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCourseById",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Programowanie niskopoziomowe\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/course/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"course",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCourseById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/course/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"course",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "seminar",
+			"item": [
+				{
+					"name": "SeminarById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/seminar/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"seminar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SeminarByTopicId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/seminar/topic/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"seminar",
+								"topic",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSeminar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"date\": \"2019-11-13 00:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/seminar/topic/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"seminar",
+								"topic",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSeminar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"date\": \"2019-05-13\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/seminar/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"seminar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSeminarById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/seminar/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"seminar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "role",
+			"item": [
+				{
+					"name": "CourseVoterRole",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/role/voter",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"role",
+								"voter"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "getAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/user/",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registerUser",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"faplo@faplo.com\",\n\t\"password\": \"123a\",\n\t\"nickname\": \"faplo\",\n\t\"firstName\": \"Paweł\",\n\t\"lastName\": \"Oczadly\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/user",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/user/admin@admin.com",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"user",
+								"admin@admin.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/user/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUserRolesById",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"id\": \"1\",\n\t\t\"name\": \"JAVA_MANIAC\"\n\t}\t\n]"
+						},
+						"url": {
+							"raw": "{{environment}}/user/role/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"user",
+								"role",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "signin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@admin.com\",\n\t\"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/authentication/signin",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"authentication",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signin user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"faplo@faplo.com\",\n\t\"password\": \"123a\"\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/authentication/signin",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"authentication",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCurrentUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/authentication/current",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"authentication",
+								"current"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTczNTAxNDM4LCJleHAiOjE1NzM1MDUwMzh9.-WdZTbQGJZqdq6K-CIk65rxBbew_TCSBHecgq8vvsTkIQni1Ju86QAbjyWGFeW92sVkm7_H0qcp24GDkFJdTqg",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "69737613-024a-428a-acdf-8198431d39f3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a36d6241-9c05-4c94-974b-9acfd3da3d70",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "de093654-6a55-4511-9a9f-8cfc14401529",
+			"key": "environment",
+			"value": "seminars-api.herokuapp.com",
+			"type": "string"
+		}
+	]
+}

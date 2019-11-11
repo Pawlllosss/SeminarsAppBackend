@@ -18,5 +18,4 @@ public interface TopicService {
     Topic updateTopic(TopicDTO topicDTO, Long id);
 
     void deleteTopic(Long id);
-
 }
