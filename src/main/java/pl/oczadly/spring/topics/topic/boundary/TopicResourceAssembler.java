@@ -4,6 +4,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
+import pl.oczadly.spring.topics.seminar.boundary.SeminarRestController;
 import pl.oczadly.spring.topics.topic.entity.Topic;
 import pl.oczadly.spring.topics.topic.entity.TopicDTO;
 
@@ -24,7 +25,9 @@ public class TopicResourceAssembler implements ResourceAssembler<Topic, Resource
                 .withRel("update");
         Link deleteLink = linkTo(methodOn(TopicRestController.class).deleteTopic(topicId))
                 .withRel("delete");
+        Link seminarsLink = linkTo(methodOn(SeminarRestController.class).getSeminarByTopicId(topicId))
+                .withRel("seminars");
 
-        return new Resource<>(topic, selfLink, updateLink, deleteLink);
+        return new Resource<>(topic, selfLink, updateLink, deleteLink, seminarsLink);
     }
 }
