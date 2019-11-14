@@ -64,7 +64,7 @@ public class SeminarRestController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('CRUD_ALL_SEMINARS')")
-    public ResponseEntity<Seminar> deleteTopic(@PathVariable Long id) {
+    public ResponseEntity<Seminar> deleteSeminar(@PathVariable Long id) {
         seminarService.deleteSeminar(id);
         return ResponseEntity.noContent()
                 .build();
