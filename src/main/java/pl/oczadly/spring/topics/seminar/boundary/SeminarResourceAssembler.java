@@ -21,7 +21,7 @@ public class SeminarResourceAssembler implements ResourceAssembler<Seminar, Reso
                 .withSelfRel();
         Link updateLink = linkTo(methodOn(SeminarRestController.class).updateSeminar(new SeminarDTO(), seminarId))
                 .withRel("update");
-        Link deleteLink = linkTo(methodOn(SeminarRestController.class).deleteTopic(seminarId))
+        Link deleteLink = linkTo(methodOn(SeminarRestController.class).deleteSeminar(seminarId))
                 .withRel("delete");
 
         return new Resource<>(seminar, selfLink, updateLink, deleteLink);
