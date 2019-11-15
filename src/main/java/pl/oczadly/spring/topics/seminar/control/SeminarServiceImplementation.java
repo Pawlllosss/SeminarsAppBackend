@@ -9,7 +9,9 @@ import pl.oczadly.spring.topics.seminar.entity.SeminarNotFoundException;
 import pl.oczadly.spring.topics.topic.control.TopicService;
 import pl.oczadly.spring.topics.topic.entity.Topic;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SeminarServiceImplementation implements SeminarService {
@@ -27,7 +29,12 @@ public class SeminarServiceImplementation implements SeminarService {
 
     @Override
     public List<Seminar> getSeminarsByTopicId(Long topicId) {
-        return seminarRepository.findByTopicId(topicId);
+        List<Seminar> seminars = seminarRepository.findByTopicId(topicId);
+        List<Seminar> seminarsSortedByDate = seminars.stream()
+                .sorted(Comparator.comparing(Seminar::getDate))
+                .collect(Collectors.toList());
+
+        return seminarsSortedByDate;
     }
 
     @Override
