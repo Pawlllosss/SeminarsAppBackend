@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.oczadly.spring.topics.course.control.CourseService;
 import pl.oczadly.spring.topics.course.entity.Course;
+import pl.oczadly.spring.topics.user.authentication.boundary.annotation.CurrentUser;
+import pl.oczadly.spring.topics.user.authentication.entity.UserAuthenticationDetails;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,14 +36,28 @@ public class CourseRestController {
     @GetMapping
     public Resources<Resource<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
+        Resources<Resource<Course>> courseResources = mapCoursesToResources(courses);
+
+        return courseResources;
+    }
+
+    private Resources<Resource<Course>> mapCoursesToResources(List<Course> courses) {
         List<Resource<Course>> coursesResponse = courses.stream()
                 .map(courseResourceAssembler::toResource)
                 .collect(Collectors.toList());
-
         Link selfLink = linkTo(CourseRestController.class).withSelfRel();
+
         return new Resources<>(coursesResponse, selfLink);
     }
 
+    @GetMapping("/currentUser")
+    public Resources<Resource<Course>> getAvailableCoursesForCurrentUser(@CurrentUser UserAuthenticationDetails currentUserAuthenticationDetails) {
+        Long userId = currentUserAuthenticationDetails.getId();
+        List<Course> courses = courseService.getAvailableCoursesForUserId(userId);
+        Resources<Resource<Course>> courseResources = mapCoursesToResources(courses);
+
+        return courseResources;
+    }
     @GetMapping("/{id}")
     public Resource<Course> getCourseById(@PathVariable Long id) {
         Course course = courseService.getCourseById(id);

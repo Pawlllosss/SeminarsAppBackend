@@ -7,8 +7,14 @@ import pl.oczadly.spring.topics.course.entity.Course;
 import pl.oczadly.spring.topics.course.entity.CourseNotFoundException;
 import pl.oczadly.spring.topics.role.control.RoleService;
 import pl.oczadly.spring.topics.role.entity.CourseVoterRole;
+import pl.oczadly.spring.topics.role.entity.Role;
+import pl.oczadly.spring.topics.user.management.control.UserService;
+import pl.oczadly.spring.topics.user.management.entity.User;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -16,6 +22,7 @@ public class CourseServiceImplementation implements CourseService {
 
     private CourseRepository courseRepository;
 
+    private UserService userService;
     private RoleService roleService;
 
     public CourseServiceImplementation() {
@@ -28,6 +35,25 @@ public class CourseServiceImplementation implements CourseService {
     @Override
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
+    }
+
+    @Override
+    public List<Course> getAvailableCoursesForUserId(Long userId) {
+        User user = userService.getUserById(userId);
+        Set<Long> availableCourseIds = getCoursesAvailableForUser(user);
+
+        return courseRepository.findAllById(availableCourseIds);
+    }
+
+    private Set<Long> getCoursesAvailableForUser(User user) {
+        Set<Role> roles = user.getRoles();
+
+        return roles.stream()
+                .map(Role::getCourseVoterRole)
+                .filter(Objects::nonNull)
+                .map(CourseVoterRole::getCourse)
+                .map(Course::getId)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -66,6 +92,11 @@ public class CourseServiceImplementation implements CourseService {
     @Autowired
     public void setCourseRepository(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Autowired
