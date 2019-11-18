@@ -221,6 +221,38 @@
 					"response": []
 				},
 				{
+					"name": "CourseAvailableForCurrentUser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/course/currentUser",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"course",
+								"currentUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "CourseById",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -451,13 +483,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{environment}}/seminar/1",
+							"raw": "{{environment}}/seminar/252",
 							"host": [
 								"{{environment}}"
 							],
 							"path": [
 								"seminar",
-								"1"
+								"252"
 							]
 						}
 					},
@@ -721,7 +753,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTczNTAxNDM4LCJleHAiOjE1NzM1MDUwMzh9.-WdZTbQGJZqdq6K-CIk65rxBbew_TCSBHecgq8vvsTkIQni1Ju86QAbjyWGFeW92sVkm7_H0qcp24GDkFJdTqg",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1MiIsImlhdCI6MTU3NDEwNDA1OSwiZXhwIjoxNTc0MTA3NjU5fQ.XAleaWzepXEm8VY48sn_fakyOby9jilH0bJ_7tRfx0JQQrjFe3V3SLTQB-qDbEo_Xot5RL_KIdjtjct6wjwVxQ",
 				"type": "string"
 			}
 		]
@@ -750,7 +782,7 @@
 	],
 	"variable": [
 		{
-			"id": "de093654-6a55-4511-9a9f-8cfc14401529",
+			"id": "26b69896-fc0f-470b-a35b-fe7773e4a60c",
 			"key": "environment",
 			"value": "seminars-api.herokuapp.com",
 			"type": "string"
