@@ -15,11 +15,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "courses")
 public class Course{
+
     @Id
     @GeneratedValue(generator = "course_generator")
     @SequenceGenerator(
@@ -41,6 +43,27 @@ public class Course{
 
     public Course(@NotBlank String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Course course = (Course) o;
+
+        return Objects.equals(id, course.id) &&
+                Objects.equals(name, course.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     public Long getId() {

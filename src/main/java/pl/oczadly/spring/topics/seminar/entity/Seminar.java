@@ -27,14 +27,14 @@ public class Seminar {
     @GeneratedValue(generator = "seminar_generator")
     @SequenceGenerator(
             name = "seminar_generator",
-            sequenceName =  "topic_sequence"
+            sequenceName =  "seminar_sequence"
     )
     private Long id;
 
     @Future
     private LocalDateTime date;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "topic_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
