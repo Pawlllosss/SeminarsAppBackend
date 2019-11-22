@@ -40,12 +40,12 @@ public class CourseServiceImplementation implements CourseService {
     @Override
     public List<Course> getAvailableCoursesForUserId(Long userId) {
         User user = userService.getUserById(userId);
-        Set<Long> availableCourseIds = getCoursesAvailableForUser(user);
+        Set<Long> availableCourseIds = getCoursesIdAvailableForUser(user);
 
         return courseRepository.findAllById(availableCourseIds);
     }
 
-    private Set<Long> getCoursesAvailableForUser(User user) {
+    private Set<Long> getCoursesIdAvailableForUser(User user) {
         Set<Role> roles = user.getRoles();
 
         return roles.stream()
@@ -54,6 +54,18 @@ public class CourseServiceImplementation implements CourseService {
                 .map(CourseVoterRole::getCourse)
                 .map(Course::getId)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean isCourseAvailableForUserId(Long userId, Long courseId) {
+        if(!isCourseExist(courseId)) {
+            throw new CourseNotFoundException(courseId);
+        }
+
+        User user = userService.getUserById(userId);
+        Set<Long> availableCourseIds = getCoursesIdAvailableForUser(user);
+
+        return availableCourseIds.contains(courseId);
     }
 
     @Override
@@ -82,11 +94,15 @@ public class CourseServiceImplementation implements CourseService {
 
     @Override
     public void deleteCourse(Long id) {
-        if(!courseRepository.existsById(id)) {
+        if(!isCourseExist(id)) {
             throw new CourseNotFoundException(id);
         }
 
         courseRepository.deleteById(id);
+    }
+
+    private boolean isCourseExist(Long id) {
+        return courseRepository.existsById(id);
     }
 
     @Autowired

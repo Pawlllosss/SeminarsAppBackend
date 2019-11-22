@@ -10,6 +10,8 @@ public interface CourseService {
 
     List<Course> getAvailableCoursesForUserId(Long userId);
 
+    boolean isCourseAvailableForUserId(Long userId, Long courseId);
+
     Course getCourseById(Long id);
 
     Course createCourse(Course course);
