@@ -10,16 +10,17 @@ import pl.oczadly.spring.topics.user.management.control.UserService;
 import pl.oczadly.spring.topics.user.management.entity.User;
 import pl.oczadly.spring.topics.voting.entity.CourseVotes;
 import pl.oczadly.spring.topics.voting.entity.Vote;
-import pl.oczadly.spring.topics.voting.entity.dto.update.CourseVotesUpdateDTO;
+import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesDTO;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class VotingServiceImplementation implements VotingService {
+public class VoteServiceImplementation implements VoteService {
 
-    private VotingValidatorService votingValidatorService;
+    private VoteValidatorService voteValidatorService;
     private UserService userService;
     private CourseService courseService;
     private SeminarService seminarService;
@@ -40,14 +41,17 @@ public class VotingServiceImplementation implements VotingService {
     }
 
     @Override
-    public CourseVotes setUserVotesForTheCourse(Long userId, Long courseId, CourseVotesUpdateDTO courseVotesUpdateDTO) {
-        votingValidatorService.validateCourseVotesDTO(userId, courseId, courseVotesUpdateDTO);
+    @Transactional
+    public CourseVotes setUserVotesForTheCourse(Long userId, Long courseId, CourseVotesDTO courseVotesDTO) {
+        voteValidatorService.validateCourseVotesDTO(userId, courseId, courseVotesDTO);
 
         CourseVotes courseVotes = getOrCreateCourseVotes(userId, courseId);
 
-        List<Long> seminarsId = courseVotesUpdateDTO.getSeminarsId();
+        List<Long> seminarsId = courseVotesDTO.getSeminarsId();
         List<Vote> votes = createVotesBasedOnSeminarsIdOrder(seminarsId);
-        courseVotes.setVotes(votes);
+
+        courseVotes.removeVotes();
+        courseVotes.addVotes(votes);
 
         return courseVotesRepository.save(courseVotes);
     }
@@ -81,8 +85,8 @@ public class VotingServiceImplementation implements VotingService {
     }
 
     @Autowired
-    public void setVotingValidatorService(VotingValidatorService votingValidatorService) {
-        this.votingValidatorService = votingValidatorService;
+    public void setVoteValidatorService(VoteValidatorService voteValidatorService) {
+        this.voteValidatorService = voteValidatorService;
     }
 
     @Autowired

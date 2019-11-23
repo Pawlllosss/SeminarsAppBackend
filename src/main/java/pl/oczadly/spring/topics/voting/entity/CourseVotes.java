@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -50,7 +51,12 @@ public class CourseVotes {
     @OrderBy("priority")
     private List<Vote> votes;
 
+    public CourseVotes() {
+        votes = new LinkedList<>();
+    }
+
     public CourseVotes(Course course, User user) {
+        votes = new LinkedList<>();
         this.course = course;
         this.user = user;
     }
@@ -83,7 +89,15 @@ public class CourseVotes {
         return votes;
     }
 
-    public void setVotes(List<Vote> votes) {
+    public void addVotes(List<Vote> votes) {
+        votes.stream()
+                .forEach(vote -> vote.setCourseVotes(this));
         this.votes = votes;
+    }
+
+    public void removeVotes() {
+        this.votes.stream()
+            .forEach(vote -> vote.setCourseVotes(null));
+        this.votes.clear();
     }
 }
