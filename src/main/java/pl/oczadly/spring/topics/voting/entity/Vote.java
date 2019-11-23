@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -37,12 +38,15 @@ public class Vote {
     private Seminar seminar;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "course_votes_id", nullable = false)
+    @JoinColumn(name = "course_votes_id")
     @JsonIgnore
     private CourseVotes courseVotes;
 
-    @NotBlank
+    @NotNull
     private int priority;
+
+    public Vote() {
+    }
 
     public Vote(Seminar seminar, @NotBlank int priority) {
         this.seminar = seminar;
