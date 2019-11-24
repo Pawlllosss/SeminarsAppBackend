@@ -10,7 +10,7 @@ import pl.oczadly.spring.topics.user.management.control.UserService;
 import pl.oczadly.spring.topics.user.management.entity.User;
 import pl.oczadly.spring.topics.voting.entity.CourseVotes;
 import pl.oczadly.spring.topics.voting.entity.Vote;
-import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesDTO;
+import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesUpdateDTO;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -42,12 +42,12 @@ public class VoteServiceImplementation implements VoteService {
 
     @Override
     @Transactional
-    public CourseVotes setUserVotesForTheCourse(Long userId, Long courseId, CourseVotesDTO courseVotesDTO) {
-        voteValidatorService.validateCourseVotesDTO(userId, courseId, courseVotesDTO);
+    public CourseVotes setUserVotesForTheCourse(Long userId, Long courseId, CourseVotesUpdateDTO courseVotesUpdateDTO) {
+        voteValidatorService.validateCourseVotesDTO(userId, courseId, courseVotesUpdateDTO);
 
         CourseVotes courseVotes = getOrCreateCourseVotes(userId, courseId);
 
-        List<Long> seminarsId = courseVotesDTO.getSeminarsId();
+        List<Long> seminarsId = courseVotesUpdateDTO.getSeminarsId();
         List<Vote> votes = createVotesBasedOnSeminarsIdOrder(seminarsId);
 
         courseVotes.removeVotes();

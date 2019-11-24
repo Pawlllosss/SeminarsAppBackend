@@ -90,14 +90,12 @@ public class CourseVotes {
     }
 
     public void addVotes(List<Vote> votes) {
-        votes.stream()
-                .forEach(vote -> vote.setCourseVotes(this));
-        this.votes = votes;
+        votes.forEach(vote -> vote.setCourseVotes(this));
+        this.votes.addAll(votes);
     }
 
     public void removeVotes() {
-        this.votes.stream()
-            .forEach(vote -> vote.setCourseVotes(null));
+        this.votes.forEach(vote -> vote.setCourseVotes(null));
         this.votes.clear();
     }
 }
