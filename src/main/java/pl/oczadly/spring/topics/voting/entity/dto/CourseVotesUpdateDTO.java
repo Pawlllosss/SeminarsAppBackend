@@ -2,14 +2,14 @@ package pl.oczadly.spring.topics.voting.entity.dto;
 
 import java.util.List;
 
-public class CourseVotesDTO {
+public class CourseVotesUpdateDTO {
 
     private List<Long> seminarsId;
 
-    public CourseVotesDTO() {
+    public CourseVotesUpdateDTO() {
     }
 
-    public CourseVotesDTO(List<Long> seminarsId) {
+    public CourseVotesUpdateDTO(List<Long> seminarsId) {
         this.seminarsId = seminarsId;
     }
 

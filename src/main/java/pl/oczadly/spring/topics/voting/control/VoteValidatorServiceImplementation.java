@@ -3,7 +3,7 @@ package pl.oczadly.spring.topics.voting.control;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.oczadly.spring.topics.course.control.CourseService;
-import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesDTO;
+import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesUpdateDTO;
 import pl.oczadly.spring.topics.voting.entity.exception.IdenticalSeminarsVotesException;
 import pl.oczadly.spring.topics.voting.entity.exception.IllegalNumberOfVotesException;
 import pl.oczadly.spring.topics.voting.entity.exception.UserNotAuthorizedForCourseVoteException;
@@ -20,22 +20,22 @@ public class VoteValidatorServiceImplementation implements VoteValidatorService 
     private CourseService courseService;
 
     @Override
-    public void validateCourseVotesDTO(Long userId, Long courseId, CourseVotesDTO courseVotesDTO) {
+    public void validateCourseVotesDTO(Long userId, Long courseId, CourseVotesUpdateDTO courseVotesUpdateDTO) {
         if (!courseService.isCourseAvailableForUserId(userId, courseId)) {
             throw new UserNotAuthorizedForCourseVoteException(userId, courseId);
         }
 
-        if (!checkIfIdenticalSeminarsExist(courseVotesDTO)) {
+        if (!checkIfIdenticalSeminarsExist(courseVotesUpdateDTO)) {
             throw new IdenticalSeminarsVotesException();
         }
 
-        if (checkIfExceedsMaximumVotes(courseVotesDTO)) {
+        if (checkIfExceedsMaximumVotes(courseVotesUpdateDTO)) {
             throw new IllegalNumberOfVotesException();
         }
     }
 
-    private boolean checkIfIdenticalSeminarsExist(CourseVotesDTO courseVotesDTO) {
-        List<Long> seminarsId = courseVotesDTO.getSeminarsId();
+    private boolean checkIfIdenticalSeminarsExist(CourseVotesUpdateDTO courseVotesUpdateDTO) {
+        List<Long> seminarsId = courseVotesUpdateDTO.getSeminarsId();
         int numberOfSeminars = seminarsId.size();
 
         Set<Long> uniqueSeminars = new HashSet<>(seminarsId);
@@ -44,8 +44,8 @@ public class VoteValidatorServiceImplementation implements VoteValidatorService 
         return numberOfSeminars == numberOfUniqueSeminars;
     }
 
-    private boolean checkIfExceedsMaximumVotes(CourseVotesDTO courseVotesDTO) {
-        List<Long> seminarsId = courseVotesDTO.getSeminarsId();
+    private boolean checkIfExceedsMaximumVotes(CourseVotesUpdateDTO courseVotesUpdateDTO) {
+        List<Long> seminarsId = courseVotesUpdateDTO.getSeminarsId();
         int numberOfSeminars = seminarsId.size();
 
         return numberOfSeminars > MAXIMUM_VOTES;

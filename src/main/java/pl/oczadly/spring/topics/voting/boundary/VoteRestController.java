@@ -12,7 +12,8 @@ import pl.oczadly.spring.topics.user.authentication.boundary.annotation.CurrentU
 import pl.oczadly.spring.topics.user.authentication.entity.UserAuthenticationDetails;
 import pl.oczadly.spring.topics.voting.control.VoteService;
 import pl.oczadly.spring.topics.voting.entity.CourseVotes;
-import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesDTO;
+import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesResponseDTO;
+import pl.oczadly.spring.topics.voting.entity.dto.CourseVotesUpdateDTO;
 
 @RestController
 @RequestMapping(value = "vote", produces = { "application/hal+json" })
@@ -23,8 +24,8 @@ public class VoteRestController {
     private VoteResourceAssembler voteResourceAssembler;
 
     @GetMapping("/course/{courseId}")
-    public Resource<CourseVotesDTO> getUserVotesForTheCourse(@CurrentUser UserAuthenticationDetails userAuthenticationDetails,
-                                                             @PathVariable Long courseId) {
+    public Resource<CourseVotesResponseDTO> getUserVotesForTheCourse(@CurrentUser UserAuthenticationDetails userAuthenticationDetails,
+                                                                     @PathVariable Long courseId) {
         Long userId = userAuthenticationDetails.getId();
         CourseVotes courseVotes = voteService.getUserVotesForTheCourse(userId, courseId);
 
@@ -32,10 +33,10 @@ public class VoteRestController {
     }
 
     @PutMapping("/course/{courseId}")
-    public Resource<CourseVotesDTO>  setUserVotesForTheCourse(@CurrentUser UserAuthenticationDetails userAuthenticationDetails,
-                                                              @PathVariable Long courseId, @RequestBody CourseVotesDTO courseVotesDTO) {
+    public Resource<CourseVotesResponseDTO>  setUserVotesForTheCourse(@CurrentUser UserAuthenticationDetails userAuthenticationDetails,
+                                                                    @PathVariable Long courseId, @RequestBody CourseVotesUpdateDTO courseVotesUpdateDTO) {
         Long userId = userAuthenticationDetails.getId();
-        CourseVotes courseVotes = voteService.setUserVotesForTheCourse(userId, courseId, courseVotesDTO);
+        CourseVotes courseVotes = voteService.setUserVotesForTheCourse(userId, courseId, courseVotesUpdateDTO);
 
         return voteResourceAssembler.toResource(courseVotes);
     }
