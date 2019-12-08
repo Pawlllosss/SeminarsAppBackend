@@ -170,14 +170,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{environment}}/topic/course/52",
+							"raw": "{{environment}}/topic/course/1",
 							"host": [
 								"{{environment}}"
 							],
 							"path": [
 								"topic",
 								"course",
-								"52"
+								"1"
 							]
 						}
 					},
@@ -298,7 +298,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Inżynieria oprogramowania\"\n}"
+							"raw": "{\n\t\"name\": \"Inżynieria oprogramowania\",\n\t\"voteEndDate\": \"2019-12-13 00:00:00\"\n}"
 						},
 						"url": {
 							"raw": "{{environment}}/course/",
@@ -352,13 +352,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{environment}}/course/1",
+							"raw": "{{environment}}/course/102",
 							"host": [
 								"{{environment}}"
 							],
 							"path": [
 								"course",
-								"1"
+								"102"
 							]
 						}
 					},
@@ -401,14 +401,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{environment}}/seminar/topic/1",
+							"raw": "{{environment}}/seminar/topic/2",
 							"host": [
 								"{{environment}}"
 							],
 							"path": [
 								"seminar",
 								"topic",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -428,7 +428,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"date\": \"2019-11-13 00:00:00\"\n}"
+							"raw": "{\n\t\"date\": \"2019-12-13 00:00:00\"\n}"
 						},
 						"url": {
 							"raw": "{{environment}}/seminar/topic/1",
@@ -517,6 +517,91 @@
 							"path": [
 								"role",
 								"voter"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vote",
+			"item": [
+				{
+					"name": "polling",
+					"item": [
+						{
+							"name": "poll vote",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{environment}}/vote/polling",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"vote",
+										"polling"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "getUserVotesForCourse",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/vote/polling",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"vote",
+								"polling"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setUserVotesForCourse",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"seminarsId\": [3, 2, 1]\n}"
+						},
+						"url": {
+							"raw": "{{environment}}/vote/course/1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"vote",
+								"course",
+								"1"
 							]
 						}
 					},
@@ -753,7 +838,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1MiIsImlhdCI6MTU3NDEwNDA1OSwiZXhwIjoxNTc0MTA3NjU5fQ.XAleaWzepXEm8VY48sn_fakyOby9jilH0bJ_7tRfx0JQQrjFe3V3SLTQB-qDbEo_Xot5RL_KIdjtjct6wjwVxQ",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTc1ODI5Mjg3LCJleHAiOjE1NzU4MzI4ODd9.1nGK-zppn_vl2YlpNlhcscBtjMqXtjUIkpivT5AGGN-Zpahrc5TTHTRa0TZTFgKTpEdOOXeWMASMb8k_fJz1sg",
 				"type": "string"
 			}
 		]
@@ -782,9 +867,9 @@
 	],
 	"variable": [
 		{
-			"id": "26b69896-fc0f-470b-a35b-fe7773e4a60c",
+			"id": "6eb630c5-3013-41ab-b71b-2639fbd54785",
 			"key": "environment",
-			"value": "seminars-api.herokuapp.com",
+			"value": "seminars-api.herokuapp.com ",
 			"type": "string"
 		}
 	]
