@@ -54,12 +54,6 @@ public class UserVotes {
         return topVote;
     }
 
-
-    public User getUser() {
-        return user;
-    }
-
-
     public void removeVotesForTopic(Topic topic) {
         List<Vote> votesWithoutTopic = votes.stream()
                 .filter(vote -> !isVoteForSameTopic(vote, topic))
@@ -71,5 +65,9 @@ public class UserVotes {
         Seminar votedSeminar = vote.getSeminar();
         Topic votedTopic = votedSeminar.getTopic();
         return votedTopic.equals(topic);
+    }
+
+    public User getUser() {
+        return user;
     }
 }
