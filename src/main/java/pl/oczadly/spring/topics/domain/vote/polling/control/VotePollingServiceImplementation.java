@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -102,8 +101,7 @@ public class VotePollingServiceImplementation implements VotePollingService {
             assignSeminarToUser(pickedUserVotes);
             userVotes.remove(pickedUserVotes);
 
-            //TODO: should remove all votes! Case when more votes on same topic!
-            userVotesToDispose.forEach(UserVotes::removeTopVote);
+            userVotesToDispose.forEach(userVote -> userVote.removeVotesForTopic(topic));
         }
     }
 
@@ -188,7 +186,7 @@ public class VotePollingServiceImplementation implements VotePollingService {
 
     private UserVotes mapToUserVotes(User user, Long courseId) {
         CourseVotes courseVotes = voteService.getUserVotesForTheCourse(user.getId(), courseId);
-        Queue<Vote> votes = new LinkedList<>(courseVotes.getVotes());
+        List<Vote> votes = new LinkedList<>(courseVotes.getVotes());
 
         return new UserVotes(user, votes);
     }
