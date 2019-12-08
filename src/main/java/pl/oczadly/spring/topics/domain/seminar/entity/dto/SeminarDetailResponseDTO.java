@@ -14,15 +14,20 @@ public class SeminarDetailResponseDTO {
     private String topicName;
 
     @NotBlank
+    private String courseName;
+
+    @NotBlank
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
 
     public SeminarDetailResponseDTO() {
     }
 
-    public SeminarDetailResponseDTO(@NotBlank Long id, @NotBlank String topicName, @NotBlank LocalDateTime date) {
+    public SeminarDetailResponseDTO(@NotBlank Long id, @NotBlank String topicName,
+                                    @NotBlank String courseName, @NotBlank LocalDateTime date) {
         this.id = id;
         this.topicName = topicName;
+        this.courseName = courseName;
         this.date = date;
     }
 
@@ -40,6 +45,14 @@ public class SeminarDetailResponseDTO {
 
     public void setTopicName(String topicName) {
         this.topicName = topicName;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public LocalDateTime getDate() {

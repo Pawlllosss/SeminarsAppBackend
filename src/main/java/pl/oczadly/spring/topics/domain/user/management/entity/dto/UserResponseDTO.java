@@ -2,8 +2,10 @@ package pl.oczadly.spring.topics.domain.user.management.entity.dto;
 
 import pl.oczadly.spring.topics.domain.privilege.entity.PrivilegeDTO;
 import pl.oczadly.spring.topics.domain.role.entity.dto.RoleDTO;
+import pl.oczadly.spring.topics.domain.seminar.entity.dto.SeminarDetailResponseDTO;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Set;
 
 public class UserResponseDTO {
@@ -25,6 +27,9 @@ public class UserResponseDTO {
 
     @NotBlank
     private Set<PrivilegeDTO> privileges;
+
+    @NotBlank
+    private List<SeminarDetailResponseDTO> seminars;
 
     public Long getId() {
         return id;
@@ -72,5 +77,13 @@ public class UserResponseDTO {
 
     public void setPrivileges(Set<PrivilegeDTO> privileges) {
         this.privileges = privileges;
+    }
+
+    public List<SeminarDetailResponseDTO> getSeminars() {
+        return seminars;
+    }
+
+    public void setSeminars(List<SeminarDetailResponseDTO> seminars) {
+        this.seminars = seminars;
     }
 }
