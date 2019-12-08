@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.oczadly.spring.topics.domain.role.control.RoleRepository;
 import pl.oczadly.spring.topics.domain.role.control.RoleService;
 import pl.oczadly.spring.topics.domain.role.entity.Role;
+import pl.oczadly.spring.topics.domain.seminar.entity.Seminar;
 import pl.oczadly.spring.topics.domain.user.management.entity.User;
 import pl.oczadly.spring.topics.domain.user.management.entity.dto.UserRegisterDTO;
 import pl.oczadly.spring.topics.domain.user.management.entity.exception.UserNotFoundException;
@@ -82,6 +83,12 @@ public class UserServiceImplementation implements UserService {
         return newRolesId.stream()
                 .map(roleService::getRoleById)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public User assignSeminarToUser(User user, Seminar seminar) {
+        user.addSeminar(seminar);
+        return userRepository.save(user);
     }
 
     @Autowired

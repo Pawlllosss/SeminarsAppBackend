@@ -33,8 +33,8 @@ class UserValidationServiceImplementationTest {
     public void whenRegisterNewUserWithHappyPathScenarioShouldPassTest() {
         mockExistsByNicknameToReturn(NICKNAME, false);
         mockExistsByEmailToReturn(EMAIL, false);
-
         UserRegisterDTO userRegisterDTO = createTestUserRegisterDTO();
+
         userValidationService.validateUserRegisterDTO(userRegisterDTO);
 
         verifyUserRepositoryExistsByNicknameCalledOnce(NICKNAME);
@@ -52,8 +52,8 @@ class UserValidationServiceImplementationTest {
     @Test
     public void whenRegisterNewUserWithExistingNicknameShouldThrowNicknameExistsException() {
         mockExistsByNicknameToReturn(NICKNAME, true);
-
         UserRegisterDTO userRegisterDTO = createTestUserRegisterDTO();
+
         assertThrows(NicknameExistsException.class, () -> userValidationService.validateUserRegisterDTO(userRegisterDTO));
 
         verifyUserRepositoryExistsByNicknameCalledOnce(NICKNAME);
@@ -66,8 +66,8 @@ class UserValidationServiceImplementationTest {
     @Test
     public void whenRegisterNewUserWithExistingEmailShouldThrowIncorrectEmailException() {
         mockExistsByEmailToReturn(EMAIL, true);
-
         UserRegisterDTO userRegisterDTO = createTestUserRegisterDTO();
+
         assertThrows(EmailExistsException.class, () -> userValidationService.validateUserRegisterDTO(userRegisterDTO));
 
         verifyUserRepositoryExistsByEmailCalledOnce(EMAIL);
