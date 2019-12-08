@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pl.oczadly.spring.topics.domain.topic.entity.Topic;
+import pl.oczadly.spring.topics.domain.user.management.entity.User;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -17,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Future;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -40,6 +42,31 @@ public class Seminar {
     @JsonIgnore
     private Topic topic;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Seminar seminar = (Seminar) o;
+        return Objects.equals(id, seminar.id) &&
+                Objects.equals(date, seminar.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, date);
+    }
+
     public Long getId() {
         return id;
     }
@@ -62,5 +89,13 @@ public class Seminar {
 
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -100,6 +100,11 @@ public class CourseServiceImplementation implements CourseService {
     }
 
     @Override
+    public Course updateCourse(Course course) {
+        return courseRepository.save(course);
+    }
+
+    @Override
     public void deleteCourse(Long id) {
         if(!isCourseExist(id)) {
             throw new CourseNotFoundException(id);
