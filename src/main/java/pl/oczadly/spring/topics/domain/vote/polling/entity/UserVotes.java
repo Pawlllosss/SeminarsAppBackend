@@ -1,19 +1,21 @@
 package pl.oczadly.spring.topics.domain.vote.polling.entity;
 
 import pl.oczadly.spring.topics.domain.seminar.entity.Seminar;
+import pl.oczadly.spring.topics.domain.topic.entity.Topic;
 import pl.oczadly.spring.topics.domain.user.management.entity.User;
 import pl.oczadly.spring.topics.domain.vote.voting.entity.Vote;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Queue;
+import java.util.stream.Collectors;
 
 public class UserVotes {
 
     private User user;
-    private Queue<Vote> votes;
+    private List<Vote> votes;
 
-    public UserVotes(User user, Queue<Vote> votes) {
+    public UserVotes(User user, List<Vote> votes) {
         this.user = user;
         this.votes = votes;
     }
@@ -39,25 +41,35 @@ public class UserVotes {
         return Objects.hash(user, votes);
     }
 
-    public boolean isSeminarAsTopVote(Seminar seminar) {
-        Optional<Vote> topVote = Optional.ofNullable(votes.peek());
-        return topVote.map(vote -> vote.getSeminar().equals(seminar))
-                .orElse(false);
-    }
-
     public Optional<Vote> peekTopVote() {
-        return Optional.ofNullable(votes.peek());
+        int lastElementIndex = votes.size() - 1;
+        Optional<Vote> topVote;
+
+        if (lastElementIndex < 0) {
+            topVote = Optional.empty();
+        } else {
+            topVote = Optional.of(votes.get(lastElementIndex));
+        }
+
+        return topVote;
     }
 
-    public void removeTopVote() {
-        votes.remove();
-    }
 
     public User getUser() {
         return user;
     }
 
-    public Queue<Vote> getVotes() {
-        return votes;
+
+    public void removeVotesForTopic(Topic topic) {
+        List<Vote> votesWithoutTopic = votes.stream()
+                .filter(vote -> !isVoteForSameTopic(vote, topic))
+                .collect(Collectors.toList());
+        this.votes = votesWithoutTopic;
+    }
+
+    private boolean isVoteForSameTopic(Vote vote, Topic topic) {
+        Seminar votedSeminar = vote.getSeminar();
+        Topic votedTopic = votedSeminar.getTopic();
+        return votedTopic.equals(topic);
     }
 }
